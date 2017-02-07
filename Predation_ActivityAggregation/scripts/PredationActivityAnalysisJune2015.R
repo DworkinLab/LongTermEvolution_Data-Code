@@ -12,7 +12,7 @@
 library(lme4)
 #Data input
 setwd("../data")
-setwd("/Users/ian/Projects_current/Predation_Social/data")
+#setwd("/Users/ian/Projects_current/Predation_Social/data")
 dir() 
 
 # the actual data are as tab delimited txt files.
