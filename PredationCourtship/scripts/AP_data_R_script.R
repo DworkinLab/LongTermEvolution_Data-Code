@@ -62,5 +62,12 @@ AP_groups <-AP_Data %>%
   group_by(Treatment, Rep) %>%
   summarise(copulation_prop=sum(Copulation/(n())), mean_court_lat= mean(Rel_Court_lat, na.rm = TRUE), mean_cop_lat = mean(Rel_Cop_lat, na.rm=TRUE), mean_cop_dur = mean(Rel_Cop_dur, na.rm=TRUE))
 
-p1 <- ggplot(Copulation_group, aes(x = Treatment, y = copulation_prop))
+p1 <- ggplot(AP_groups, aes(x = Treatment, y = copulation_prop))
+p2 <- ggplot(AP_groups, aes(x=Treatment, y = mean_court_lat))
+p3 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_lat))
+p4 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_dur))
 
+p1+geom_point()
+p2+geom_point()
+p3+geom_point()
+p4+geom_point()
