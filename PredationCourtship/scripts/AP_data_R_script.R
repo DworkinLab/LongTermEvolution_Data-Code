@@ -69,11 +69,28 @@ p4 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_dur))
 p5 <- ggplot(AP_groups, aes(x=Rep, y=cop_sum, colour=Treatment))
 
 p1+geom_point()
+p1+geom_boxplot()
+
 p2+geom_point()
+p2+geom_boxplot()
+
 p3+geom_point()
+p3+geom_boxplot()
+
 p4+geom_point()
+p4+geom_boxplot()
+
 p5+geom_point()
+p5+geom_boxplot()
 
-p6 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
+
+head(AP_Data)
+p6 <- ggplot(AP_Data, aes(x = Treatment, y = Rel_Court_lat))
+p7 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_lat))
+p8 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
+p9 <- ggplot(AP_Data, aes(x=Treatment, y = Copulation))
+
 p6+geom_boxplot()
-
+p7+geom_boxplot()
+p8+geom_boxplot()
+p9+geom_count()
