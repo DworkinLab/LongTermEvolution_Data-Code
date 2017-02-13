@@ -38,9 +38,9 @@ colnames(DAM_data) <- c("bin", "day", "month", "year", "time", "signal", "unknow
 # crap <- paste("'", "vial", 1:32, "'", sep="", collapse=', ') to get all the vials
 
 # Parse data, and remove unnecessary columns
-
+DAM_data
 DAM_data2 <- DAM_data[, -c(7:11, 37:44)]
-
+DAM_data2
 
 #make variables the right class
 str(DAM_data2)

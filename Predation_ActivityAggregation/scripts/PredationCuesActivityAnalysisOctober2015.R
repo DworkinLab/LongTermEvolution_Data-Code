@@ -11,13 +11,13 @@
 #libraries
 library(lme4)
 #Data input
-setwd("../data")
-setwd("/Users/ian/Projects_current/Predation_Social/data")
-dir() 
+#setwd("../data")
+#setwd("/Users/ian/Projects_current/Predation_Social/data")
+#dir() 
 
 # the actual data are as tab delimited txt files.
 
-DAM1 <- read.table("FlyActivityWithSpiderCuesDAM1.txt")
+DAM1 <- read.table("FlyActivityWithSpiderCuesDAM1_Oct2015.txt")
 # Create a new variable for the DAM monitor ID
 DAM1$v45 <- 1
 
@@ -25,6 +25,7 @@ DAM_data <- DAM1
 
 # Sample information is in a seperate csv
 sample_info <- read.csv("Predation_ActivityMetaData_May2015_RD.csv")
+sample_info
 
 colnames(DAM_data) <- c("bin", "day", "month", "year", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4",
                         "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8',
@@ -36,14 +37,15 @@ colnames(DAM_data) <- c("bin", "day", "month", "year", "time", "signal", "unknow
 # crap <- paste("'", "vial", 1:32, "'", sep="", collapse=', ') to get all the vials
 
 # Parse data, and remove unnecessary columns
-
+DAM_data
 DAM_data2 <- DAM_data[, -c(7:12, 21:36)]
 
-
+DAM_data2
 #make variables the right class
 str(DAM_data2)
 
-#DAM_data2$day <- as.factor(DAM_data2$day)
+#Why is this hashed out?
+DAM_data2$day <- as.factor(DAM_data2$day)
 
 # Get time set up.
 DAM_data2$datetime <- as.POSIXct( strptime( paste( DAM_data2$day,DAM_data2$month,DAM_data2$year, DAM_data2$time), 
@@ -59,12 +61,12 @@ DAM_data2$monitor <- as.factor(DAM_data2$monitor)
 sample_info$vial <- paste("vial", sample_info$Location, sep="")
 colnames(sample_info)[3] <- "day"
 sample_info$day.vial <- interaction(sample_info$day, sample_info$vial) # day is the start day.
-
+#sample_info
 # reshape
 
 
 DAM_long <- reshape(DAM_data2, varying=list(7:22), v.names="activity_counts", direction="long")
-
+DAM_long
 
 # Check this, it may not work...
 DAM_long$vial <- rep(colnames(DAM_data2)[7:22], each=1577)
@@ -90,6 +92,7 @@ nlevels(DAM_long2$individual)
 
 # compute mean activity (per minute) across the whole day
 crap3 <- with(DAM_long2, aggregate(activity_counts, FUN=mean, by=list(individual)))
+crap3
 colnames(crap3) <- c("individual", "Trt", "Population",  "monitor", "start_day","mean_activity" )
 lattice::bwplot(x ~ Group.1, data=crap3)
 lattice::bwplot(mean_activity ~ as.factor(monitor):as.factor(start_day), data=crap3)
