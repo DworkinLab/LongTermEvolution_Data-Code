@@ -25,6 +25,7 @@ DAM2 <- read.table("PredationActivityDAM2_May2015_RD.txt")
 DAM2$v45 <- 2
 DAM_data <- rbind(DAM1, DAM2)
 
+
 # Sample information is in a seperate csv
 sample_info <- read.csv("Predation_ActivityMetaData_May2015_RD.csv")
 
