@@ -29,6 +29,11 @@ head(Act_Data)
 #Remove unknowns
 Act_Data2 <- Act_Data[,-c(5:9)]
 
+#Remove unneeded vials (i.e vials 9 - 24)
+#14 - 29
+Act_Data2 <- Act_Data2[,-c(14:29)]
+
+head(Act_Data2)
 #Change Day format
 #Act_Data2 <- Act_Data2 %>% 
 #  separate(date, c("Month","Day","Year"), "/")
@@ -49,24 +54,24 @@ Act_long$hour <- as.numeric(strftime(Act_long$datetime, format ="%H"))
 # to get day
 Act_long$day <- as.numeric(strftime(Act_long$datetime, format = "%d"))
 
-#head(Act_long)
+head(Act_long)
+
+
 #day.vial -- is it needed or was it just to merge
 #Act_long$day.vial <- interaction(Act_long$day, Act_long$vial)
 
+#Removed vials in middle above
 
-#Need to know what is what... i.e monitor 1 = pred, monitor 2 = control?, sexes? etc.
+#Note; one column (when dark == purple on excel) has a jump in activity of 1 for that time minute--> both monitors == bin 595
 
-#Note from RD: my color codes on the Excel fiels are yellow for light, orange for spider cues and green for control.
-
-#Note; one column (when dark == purple on excel) has a jump in activity of 1 for that time minute-->
 
 # monitor 1: 
-#vials 1-8 == green ----- vials 25-32 == orange
-#Light switch (purple) == bin = 595
-
+#vials 1-8 == control ----- vials 25-32 == predator
 # monitor 2:
-#vials 1-8 = orange ------ vials 25- 32 == green
-#Purple == bin = 595
+#vials 1-8 = predator ------ vials 25- 32 == Control
 
+#Act_long$Treatment <- "Spider"
 
+#Act_long$Treatment <- ifelse(Act_long$Vial == "vial1" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial2" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial3" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial4" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial5" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial6" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial7" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial8" && Act_long$monitor =="1", "Control", ifelse(Act_long$Vial == "vial25" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial26" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial27" && Act_long$monitor =="2", "Control",ifelse(Act_long$Vial == "vial28" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial29" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial30" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial31" && Act_long$monitor =="2", "Control", ifelse(Act_long$Vial == "vial32" && Act_long$monitor =="2", "Control", "Spider"))))))))))))))))
 
+#Simpler would be to put this before rbind --
