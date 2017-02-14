@@ -28,8 +28,6 @@ head(Act_Data)
 
 #Remove unknowns
 Act_Data2 <- Act_Data[,-c(5:9)]
-head(Act_Data2)
-str(Act_Data2)
 
 #Change Day format
 #Act_Data2 <- Act_Data2 %>% 
@@ -57,3 +55,18 @@ Act_long$day <- as.numeric(strftime(Act_long$datetime, format = "%d"))
 
 
 #Need to know what is what... i.e monitor 1 = pred, monitor 2 = control?, sexes? etc.
+
+#Note from RD: my color codes on the Excel fiels are yellow for light, orange for spider cues and green for control.
+
+#Note; one column (when dark == purple on excel) has a jump in activity of 1 for that time minute-->
+
+# monitor 1: 
+#vials 1-8 == green ----- vials 25-32 == orange
+#Light switch (purple) == bin = 595
+
+# monitor 2:
+#vials 1-8 = orange ------ vials 25- 32 == green
+#Purple == bin = 595
+
+
+
