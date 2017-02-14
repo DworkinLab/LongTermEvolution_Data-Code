@@ -69,7 +69,11 @@ Mon2_long$Treatment <- ifelse(Mon2_long$Vial == "vial1", "Spider", ifelse (Mon2_
 Act_long <- rbind(Mon1_long, Mon2_long)
 
 #Make individual codes for each ??? -- look at old code?
+
+
 #Note; one column (when dark == purple on excel) has a jump in activity of 1 for that time minute--> both monitors == bin 595
+
+#Forgot this:
 Act_long$monitor <- as.factor(Act_long$monitor)
 
 #Quick look at daily activity
@@ -81,6 +85,8 @@ day_act <- Act_long %>%
 lattice::bwplot(mean_activity ~ as.factor(Treatment), data=day_act)
 lattice::bwplot(mean_activity ~ as.factor(monitor):as.factor(day), data=day_act)
 
+#My own plots (ggplot which I know better)
+
 #p1 <- ggplot(data = day_act, aes(x = monitor, y = mean_activity, colour = Treatment))
 #p1+geom_boxplot()
 
@@ -90,7 +96,7 @@ p2+geom_boxplot()
 p3 <- ggplot(data = day_act, aes(Treatment, mean_activity))
 p3+geom_boxplot()
 
-#copied model
+#copied model from Ian Script (June2015)
 day_act.lmer <- lmer(mean_activity ~ Treatment + monitor + (1|day), data=day_act)
 car::Anova(day_act.lmer)
 summary(day_act.lmer)
