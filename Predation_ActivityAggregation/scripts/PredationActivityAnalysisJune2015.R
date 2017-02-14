@@ -12,7 +12,7 @@
 library(lme4)
 #Data input
 setwd("../data")
-setwd("/Users/ian/Projects_current/Predation_Social/data")
+#setwd("/Users/ian/Projects_current/Predation_Social/data")
 dir() 
 
 # the actual data are as tab delimited txt files.
@@ -52,7 +52,7 @@ str(DAM_data2)
 DAM_data2$datetime <- as.POSIXct( strptime( paste( DAM_data2$day,DAM_data2$month,DAM_data2$year, DAM_data2$time), 
                                  "%d %B %y %H:%M:%S") )
 DAM_data2$monitor <- as.factor(DAM_data2$monitor)
- 
+head(DAM_data2) 
 # Check to see if the two monitors show similar patterns
 # Add more EDA to check...
 
