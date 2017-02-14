@@ -38,3 +38,22 @@ str(Act_Data2)
 Act_Data2$datetime <- as.POSIXct(paste(Act_Data2$date, Act_Data2$time), format="%m/%d/%y %H:%M:%S")
 head(Act_Data2)
 
+
+#Reshape to long
+#Episodic_long <- gather(Data_subset, Population, Allele_Freq , ConR1_115:AncestorR1_0, factor_key=TRUE)
+Act_long <- gather(Act_Data2, Vial, Activity_counts, vial1:vial32, factor_key = FALSE)
+head(Act_long)
+
+# To get minute
+Act_long$minute <- as.numeric(strftime(Act_long$datetime, format ="%M"))
+# to get hour
+Act_long$hour <- as.numeric(strftime(Act_long$datetime, format ="%H"))
+# to get day
+Act_long$day <- as.numeric(strftime(Act_long$datetime, format = "%d"))
+
+#head(Act_long)
+#day.vial -- is it needed or was it just to merge
+#Act_long$day.vial <- interaction(Act_long$day, Act_long$vial)
+
+
+#Need to know what is what... i.e monitor 1 = pred, monitor 2 = control?, sexes? etc.

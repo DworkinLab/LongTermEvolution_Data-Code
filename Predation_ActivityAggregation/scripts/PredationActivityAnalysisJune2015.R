@@ -65,9 +65,9 @@ sample_info$day.vial <- interaction(sample_info$day, sample_info$vial) # day is 
 
 # reshape
 
-
+head(DAM_data2)
 DAM_long <- reshape(DAM_data2, varying=list(8:31), v.names="activity_counts", direction="long")
-
+head(DAM_long)
 
 # Add the identifier (14400 is the number of time points per day times the number of days)
 DAM_long$vial <- rep(colnames(DAM_data2)[8:31], each=14400)
