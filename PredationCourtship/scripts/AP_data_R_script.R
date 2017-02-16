@@ -85,6 +85,9 @@ p5+geom_boxplot()
 
 
 head(AP_Data)
+
+AP_Data$Rep <- as.factor(AP_Data$Rep)
+
 p6 <- ggplot(AP_Data, aes(x = Treatment, y = Rel_Court_lat))
 p7 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_lat))
 p8 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
@@ -94,3 +97,14 @@ p6+geom_boxplot()
 p7+geom_boxplot()
 p8+geom_boxplot()
 p9+geom_count()
+
+AP_Data$Treatment.Rep <- with(AP_Data, paste0(Treatment, Rep))
+AP_groups$Treatment.Rep <- with(AP_groups, paste0(Treatment, Rep))
+p10 <- ggplot(AP_Data, aes(x = Treatment.Rep, y = Rel_Court_lat, colour = Treatment))
+p11 <- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_lat, colour=Treatment))
+p12<- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_dur, colour = Treatment))
+
+p10+geom_boxplot()
+p11+geom_boxplot()
+p12+geom_boxplot()
+
