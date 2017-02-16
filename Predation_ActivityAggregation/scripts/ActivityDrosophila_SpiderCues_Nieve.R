@@ -9,6 +9,7 @@ library(lme4)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
+library(effects)
 
 #Data input: working directory 
 setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_SpiderCues_May2016")
