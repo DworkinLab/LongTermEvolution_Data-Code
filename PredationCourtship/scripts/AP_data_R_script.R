@@ -8,7 +8,7 @@ library(tidyr)
 #library(car)
 
 #Change working directory to the Data folder (if from script folder to start)!
-
+setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/data")
 AP_evolved_data <- read.csv("AP_EvolvedPopCourtshipCopulation_2014.csv", h=T)
 
 #Start time of agebin 4 not recorded: so removed

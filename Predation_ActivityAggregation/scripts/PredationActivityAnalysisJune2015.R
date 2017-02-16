@@ -11,12 +11,12 @@
 #libraries
 library(lme4)
 #Data input
-setwd("../data")
+#setwd("../data")
 #setwd("/Users/ian/Projects_current/Predation_Social/data")
-dir() 
+#dir() 
 
 # the actual data are as tab delimited txt files.
-
+setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_EvolvedPops_May2015")
 DAM1 <- read.table("PredationActivityDAM1_May2015_RD.txt")
 # Create a new variable for the DAM monitor ID
 DAM1$v45 <- 1

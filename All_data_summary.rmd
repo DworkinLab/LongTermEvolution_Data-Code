@@ -1,0 +1,17 @@
+Plots necessary
+
+Evolution Pop's: Activity
+```{r, echo=FALSE, warning=FALSE, include=FALSE}
+#source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/scripts/PredationActivityAnalysisJune2015.R")
+```
+
+Nieve Flies: Activity
+```{r,  echo=FALSE, warning=FALSE, include=FALSE}
+source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/scripts/ActivityDrosophila_SpiderCues_Nieve.R")
+```
+
+Evolved Pop's: Mating Behaviours
+```{r,  echo=FALSE, warning=FALSE, include=FALSE}
+source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/scripts")
+```
+
