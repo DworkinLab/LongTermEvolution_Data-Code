@@ -3,7 +3,8 @@
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-
+library(lme4)
+library(effects)
 #library(lme4)
 #library(car)
 
@@ -45,7 +46,7 @@ AP_evolved_data <- within(AP_evolved_data, {
 
 head(AP_evolved_data)
 #New Data frame with only important data:
-AP_Data <- subset(AP_evolved_data, select = c(Treatment, Rep, Rel_Court_lat, Rel_Cop_lat, Rel_Cop_dur, Copulation))
+AP_Data <- subset(AP_evolved_data, select = c(Treatment, Rep, Rel_Court_lat, Rel_Cop_lat, Rel_Cop_dur, Copulation, Temperature, Humidity, Date, AgeBin))
 
 #AP_court_lat <- subset(AP_Data, select = c(Treatment, Rep, Rel_Court_lat))
 #AP_cop_dur <- subset(AP_Data, select = c(Treatment, Rep, Rel_Cop_dur))
@@ -68,23 +69,23 @@ p3 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_lat))
 p4 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_dur))
 p5 <- ggplot(AP_groups, aes(x=Rep, y=cop_sum, colour=Treatment))
 
-p1+geom_point()
-p1+geom_boxplot()
+#p1+geom_point()
+#p1+geom_boxplot()
 
-p2+geom_point()
-p2+geom_boxplot()
+#p2+geom_point()
+#p2+geom_boxplot()
 
-p3+geom_point()
-p3+geom_boxplot()
+#p3+geom_point()
+#p3+geom_boxplot()
 
-p4+geom_point()
-p4+geom_boxplot()
+#p4+geom_point()
+#p4+geom_boxplot()
 
-p5+geom_point()
-p5+geom_boxplot()
+#p5+geom_point()
+#p5+geom_boxplot()
 
 
-head(AP_Data)
+#head(AP_Data)
 
 AP_Data$Rep <- as.factor(AP_Data$Rep)
 
@@ -108,3 +109,8 @@ p10+geom_boxplot()
 p11+geom_boxplot()
 p12+geom_boxplot()
 
+head(AP_Data)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Temperature + Humidity + (1|Date), data = AP_Data)
+summary(mod_court)
+car::Anova(mod_court)
+plot(allEffects(mod_court))
