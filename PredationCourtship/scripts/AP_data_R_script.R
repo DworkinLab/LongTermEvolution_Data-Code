@@ -110,6 +110,8 @@ p11+geom_boxplot()
 p12+geom_boxplot()
 
 head(AP_Data)
+
+#Models
 mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Temperature + Humidity + (1|Date), data = AP_Data)
 summary(mod_court)
 car::Anova(mod_court)

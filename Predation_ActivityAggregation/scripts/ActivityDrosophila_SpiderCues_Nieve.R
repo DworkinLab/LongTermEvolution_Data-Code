@@ -96,8 +96,12 @@ plo2+geom_boxplot()
 plo3 <- ggplot(data = day_act, aes(Treatment, mean_activity))
 plo3+geom_boxplot()
 
+day_act$Treatment <- as.factor(day_act$Treatment)
 #copied model from Ian Script (June2015)
-day_act.lmer <- lmer(mean_activity ~ Treatment + monitor + (1|day), data=day_act)
+
+#changed some: look at old (diff)
+day_act.lmer <- lmer(mean_activity ~ Treatment + day + (1|day), data=day_act)
 car::Anova(day_act.lmer)
 summary(day_act.lmer)
 confint(day_act.lmer)
+plot(allEffects(day_act.lmer))
