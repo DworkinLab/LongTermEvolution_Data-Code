@@ -112,7 +112,25 @@ p12+geom_boxplot()
 head(AP_Data)
 
 #Models
-mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Temperature + Humidity + (1|Date), data = AP_Data)
+AP_Data$Rep <- as.numeric(AP_Data$Rep)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Rep + Temperature + Humidity + (1|Date), data = AP_Data)
 summary(mod_court)
 car::Anova(mod_court)
 plot(allEffects(mod_court))
+
+mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
+plot(allEffects(mod_court_plot))
+mod_copl_plot <- lmer(Rel_Cop_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
+plot(allEffects(mod_copl_plot))
+mod_copd_plot <- lmer(Rel_Cop_dur ~ 1 + Treatment + (1|Date), data = AP_Data)
+plot(allEffects(mod_copd_plot))
+mod_cop_count <- lmer(Copulation ~ 1+ Treatment + (1|Date), data=AP_Data)
+head(AP_Data)
+
+plot(effect("Treatment", mod_court_plot), main = "Relative Courtship Latency", ylab = "Courtship Latency (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 1,nrow = 2,ncol = 2, more=TRUE)
+plot(effect("Treatment", mod_copl_plot), main = "Relative Copulation Latency", ylab = "Copulation Latency (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 2,nrow = 2,ncol = 2, more=TRUE)
+plot(effect("Treatment", mod_copd_plot), main = "Relative Copulation Duration", ylab = "Copulation Duration (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 2,col = 1,nrow = 2,ncol = 2, more=TRUE)
+plot(effect("Treatment", mod_cop_count), main = "Copulation", ylab = "Copulation ", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 2,col = 2,nrow = 2,ncol = 2)
+
+
+#Works: add in all effects to correct models!
