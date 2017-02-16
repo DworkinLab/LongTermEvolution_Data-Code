@@ -90,11 +90,11 @@ lattice::bwplot(mean_activity ~ as.factor(monitor):as.factor(day), data=day_act)
 #p1 <- ggplot(data = day_act, aes(x = monitor, y = mean_activity, colour = Treatment))
 #p1+geom_boxplot()
 
-p2 <- ggplot(data = day_act, aes(x = Treatment, y = mean_activity, colour = monitor))
-p2+geom_boxplot()
+plo2 <- ggplot(data = day_act, aes(x = Treatment, y = mean_activity, colour = monitor))
+plo2+geom_boxplot()
 
-p3 <- ggplot(data = day_act, aes(Treatment, mean_activity))
-p3+geom_boxplot()
+plo3 <- ggplot(data = day_act, aes(Treatment, mean_activity))
+plo3+geom_boxplot()
 
 #copied model from Ian Script (June2015)
 day_act.lmer <- lmer(mean_activity ~ Treatment + monitor + (1|day), data=day_act)
