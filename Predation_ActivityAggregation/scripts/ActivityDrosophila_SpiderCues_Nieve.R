@@ -101,7 +101,7 @@ day_act$Treatment <- as.factor(day_act$Treatment)
 #copied model from Ian Script (June2015)
 
 #changed some: look at old (diff)
-day_act.lmer <- lmer(mean_activity ~ Treatment + day + (1|day), data=day_act)
+day_act.lmer <- lmer(mean_activity ~ Treatment + day + monitor + (1|day), data=day_act)
 car::Anova(day_act.lmer)
 summary(day_act.lmer)
 confint(day_act.lmer)

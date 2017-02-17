@@ -92,13 +92,18 @@ AP_Data$Rep <- as.factor(AP_Data$Rep)
 p6 <- ggplot(AP_Data, aes(x = Treatment, y = Rel_Court_lat))
 p7 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_lat))
 p8 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
-p9 <- ggplot(AP_Data, aes(x=Treatment, y = Copulation))
+p9 <- ggplot(AP_Data, aes(x=Treatment, y = Copulation), ylab("Copulation"))
 
-p6+geom_boxplot()
-p7+geom_boxplot()
-p8+geom_boxplot()
-p9+geom_count()
+aaa <- p6+geom_boxplot() +
+  ylab("Courtship Latency (sec)")
+bbb <- p7+geom_boxplot() +
+  ylab("Copulation Latency (sec)")
+ccc <- p8+geom_boxplot() +
+  ylab("Copulation Duration (sec)")
+ddd <- p1+geom_boxplot() +
+  ylab("Copulation Proportion")
 
+multiplot(aaa,ccc,bbb, ddd, cols=2)
 AP_Data$Treatment.Rep <- with(AP_Data, paste0(Treatment, Rep))
 AP_groups$Treatment.Rep <- with(AP_groups, paste0(Treatment, Rep))
 p10 <- ggplot(AP_Data, aes(x = Treatment.Rep, y = Rel_Court_lat, colour = Treatment))
