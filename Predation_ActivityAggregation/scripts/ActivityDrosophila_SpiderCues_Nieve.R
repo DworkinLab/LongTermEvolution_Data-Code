@@ -207,7 +207,7 @@ lines(lowess(act_hour$activity_counts ~ act_hour$hour_shift, f=0.1), col="red")
 with(act_hour[act_hour$Treatment=="Control",], 
      plot(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2,
           xlab ="hours after initiation", ylab = "hourly activity",
-          main = "temporal patterns of activity ",
+          main = "Activity: Lab Flies ",
           ylim=c(0,400)))
 
 with(act_hour[act_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift),lwd=2))
@@ -218,6 +218,7 @@ with(act_hour[act_hour$Treatment=="Spider",], lines(smooth.spline(y=activity_cou
 
 legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
 
+#Check that the rectangle is for light! == Yes == Remember -- actually off by ~ few minutes of light vs. Dark (10:05...)
 
 #Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
 rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)

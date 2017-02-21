@@ -8,6 +8,45 @@ library(effects)
 #library(lme4)
 #library(car)
 
+
+#Multiplots: to join plots together
+#From: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
 #Change working directory to the Data folder (if from script folder to start)!
 setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/data")
 AP_evolved_data <- read.csv("AP_EvolvedPopCourtshipCopulation_2014.csv", h=T)
@@ -139,3 +178,10 @@ plot(effect("Treatment", mod_cop_count), main = "Copulation", ylab = "Copulation
 
 
 #Works: add in all effects to correct models!
+
+
+plot(effect("Treatment", mod_court_plot), main = "Courtship Latency", ylab = "Courtship Latency (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 1,nrow = 1,ncol = 2, more=TRUE)
+plot(effect("Treatment", mod_copl_plot), main = "Copulation Latency", ylab = "Copulation Latency (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 2,nrow = 1,ncol = 2)
+
+plot(effect("Treatment", mod_copd_plot), main =  "Copulation Duration", ylab = "Copulation Duration (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 1,nrow = 1,ncol = 2, more=TRUE)
+plot(effect("Treatment", mod_cop_count), main = "Copulation Proportion", ylab = "Copulation ", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 2,nrow = 1,ncol = 2)
