@@ -3,6 +3,7 @@
 #From Dukas ReadMe: "Spring 2016 - naive population with predator cues. Note from RD: my color codes on the Excel fiels are yellow for light, orange for spider cues and green for control" 
 
 #Convert .xlsx to .txt files (and rename to consistant format) online conversion
+#https://www.coolutils.com/online/XLSX-to-TXT
 
 library(lme4)
 library(nlme)
