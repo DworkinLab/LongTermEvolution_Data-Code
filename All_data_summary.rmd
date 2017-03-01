@@ -1,4 +1,4 @@
-# File with three sets of data and plots
+# File with summary of data and models
 ```{r, echo=FALSE, warning=FALSE, include=FALSE}
 #Multiplots:
 #From: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
@@ -82,12 +82,13 @@ rect(xleft=2, xright=14, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 ```
 
 
-###Nieve Mean Daily Activity: By monitor and combined
+
+###Naive Mean Daily Activity: By monitor and combined
 
 ```{r, echo=FALSE, warning=FALSE}
-g1 <- plo2+geom_boxplot()
+
 g2 <- plo3+geom_boxplot()
-multiplot(g1, g2, cols = 2)
+g2
 ```
 
 ###Very Quick linear model for daily activity
@@ -97,6 +98,48 @@ day_act.lmer <- lmer(mean_activity ~ Treatment + monitor + (1|day), data=day_act
 car::Anova(day_act.lmer)
 summary(day_act.lmer)
 confint(day_act.lmer)
+```
+
+
+
+###Naive daily activity: Hourly
+
+```{r, echo=FALSE, warning=FALSE}
+
+with(act_hour[act_hour$Treatment=="Control",], 
+     plot(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2,
+          xlab ="hours after initiation", ylab = "hourly activity",
+          main = "Activity: Lab Flies ",
+          ylim=c(0,400)))
+
+with(act_hour[act_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift),lwd=2))
+
+with(act_hour[act_hour$Treatment=="Spider",], points(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2, col="red"))
+with(act_hour[act_hour$Treatment=="Spider",], lines(smooth.spline(y=activity_counts, x = hour_shift), col="red", lwd=2))
+
+legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
+rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+rect(xleft=22, xright=24, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+
+```
+
+
+###Quick Models
+
+Hourly activity:
+```{r}
+hour.mod <- lm(activity_counts ~ Treatment + hour_shift + monitor + day,data=act_hour)
+summary(hour.mod)
+pacf(resid(hour.mod))
+```
+
+
+Correlation Model
+```{r}
+act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour_shift + monitor + day, correlation = corAR1(form =~1|hour_shift), control = list(singular.ok = TRUE), data=act_hour)
+summary(act_cor_light_mod)
+confint(act_cor_light_mod)
+acf(resid(act_cor_light_mod))
 ```
 
 
@@ -122,14 +165,7 @@ Rel_copdur <- p8+geom_boxplot()
 multiplot(Rel_court, Rel_coplat, Rel_copdur, cols=2)
 ```
 
-Replicates Split:
 
-```{r, echo=FALSE, warning=FALSE}
-Rel_court_Rep <- p10+geom_boxplot()
-Rel_coplat_Rep <- p11+geom_boxplot()
-Rel_copdur_Rep <- p12+geom_boxplot()
-multiplot(Rel_court_Rep, Rel_coplat_Rep, Rel_copdur_Rep, cols=2)
-```
 
 
 

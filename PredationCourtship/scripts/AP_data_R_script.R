@@ -143,6 +143,7 @@ ddd <- p1+geom_boxplot() +
   ylab("Copulation Proportion")
 
 multiplot(aaa,ccc,bbb, ddd, cols=2)
+
 AP_Data$Treatment.Rep <- with(AP_Data, paste0(Treatment, Rep))
 AP_groups$Treatment.Rep <- with(AP_groups, paste0(Treatment, Rep))
 p10 <- ggplot(AP_Data, aes(x = Treatment.Rep, y = Rel_Court_lat, colour = Treatment))

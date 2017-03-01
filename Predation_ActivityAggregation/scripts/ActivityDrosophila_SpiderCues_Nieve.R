@@ -193,7 +193,7 @@ acf(resid(correl_mod))
 act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour_shift + monitor + day, correlation = corAR1(form =~1|hour_shift), control = list(singular.ok = TRUE), data=act_hour)
 summary(act_cor_light_mod)
 confint(act_cor_light_mod)
-
+acf(resid(act_cor_light_mod))
 
 #Same Plot:::::
 act_hour$hour_shift <- as.numeric(act_hour$hour_shift)
@@ -223,4 +223,5 @@ legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
 #Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
 rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 rect(xleft=22, xright=24, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+
 
