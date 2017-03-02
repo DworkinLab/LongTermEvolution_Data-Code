@@ -81,3 +81,86 @@ Mantid_long$Vial <- as.factor(Mantid_long$Vial)
 
 
 ## Data now all cleaned up:
+#WARNING: same variables mostly from Spider script -- Check everything (hour shifting and all may be wrong;; also opposite monitor layout!)
+
+
+Mantid_hour <- Mantid_long %>%
+  group_by(Treatment, Vial, monitor, day, hour) %>%
+  summarise(activity_counts = sum(Activity_counts))
+
+Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop=FALSE))
+
+##Possibly need to shift times to start of experiment?
+#head(Mon1)
+#head(Mon2)
+MantidMon2$time
+#Start time = first reading == 14:01
+#shift times by 1 hours:
+Mantid_hour$hour <- as.numeric(Mantid_hour$hour)
+Mantid_hour$hour_shift <- ifelse(Mantid_hour$hour >= 14, (Mantid_hour$hour - 14), (Mantid_hour$hour +10))
+
+
+Mantid_hour$hour_shift <- as.factor(Mantid_hour$hour_shift)
+man_hourShift_gg <- ggplot(Mantid_hour, aes(x=hour_shift, y= activity_counts, colour=Treatment))
+man_hourShift_gg + geom_boxplot()
+
+#Light or Dark -- light on at ~10am, off at 22:00
+#Do before hour shifting? -- don't use hour shift and it works
+#Actually off at 22:05 and on at 10:05???????????????????????
+
+Mantid_hour$light <- with(Mantid_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+
+#Man_hour.mod <- lm(activity_counts ~ Treatment + hour_shift + monitor + day,data=Mantid_hour)
+#summary(Man_hour.mod)
+#pacf(resid(Man_hour.mod))
+
+#Auto-correlation:
+#act_hour$individual <- as.factor(act_hour$individual)
+#act_hour$hour_shift <- as.factor(act_hour$hour_shift)
+
+#??gls
+#generalized least squares
+
+man_correl_mod <- gls(activity_counts ~ Treatment + hour_shift + monitor + day, correlation = corAR1(form = ~ 1|hour_shift), data=Mantid_hour)
+anova(man_correl_mod)
+summary(man_correl_mod)
+acf(resid(man_correl_mod))
+
+#With light
+#manCor_lightMod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour_shift + monitor + day, correlation = corAR1(form =~1|hour_shift), control = list(singular.ok = TRUE), data=Mantid_hour)
+#summary(manCor_lightMod)
+#confint(manCor_lightMod)
+#acf(resid(manCor_lightMod))
+
+#Same Plot:::::
+Mantid_hour$hour_shift <- as.numeric(Mantid_hour$hour_shift)
+
+
+with(Mantid_hour, plot(activity_counts ~ jitter(hour_shift), pch=20, cex=0.1))
+lines(smooth.spline(y=Mantid_hour$activity_counts, x = Mantid_hour$hour_shift))
+lines(lowess(Mantid_hour$activity_counts ~ Mantid_hour$hour_shift, f=0.1), col="red")
+
+
+with(Mantid_hour[Mantid_hour$Treatment=="Control",], 
+     plot(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2,
+          xlab ="hours after initiation", ylab = "hourly activity",
+          main = "Activity: Lab Flies ",
+          ylim=c(0,100)))
+
+with(Mantid_hour[Mantid_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift),lwd=2))
+
+with(Mantid_hour[Mantid_hour$Treatment=="Mantid",], points(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2, col="red"))
+with(Mantid_hour[Mantid_hour$Treatment=="Mantid",], lines(smooth.spline(y=activity_counts, x = hour_shift), col="red", lwd=2))
+
+
+legend(x=15, y=200, legend=c("Control", "Mantid"), pch=20, col=c(1, "red"))
+
+#Check that the rectangle is for light! == Yes == Remember -- actually off by ~ few minutes of light vs. Dark (10:05...)
+
+#Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
+rect(xleft=0, xright=8, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+rect(xleft=20, xright=24, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+
+
+#Seems odd: check numbers!
+
