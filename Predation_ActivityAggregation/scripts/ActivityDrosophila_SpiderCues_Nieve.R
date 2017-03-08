@@ -5,18 +5,22 @@
 #Start by getting .txt data.. online conversion?
 
 #Libraries
-library(lme4)
-library(nlme)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(effects)
+#library(lme4)
+#library(nlme)
+#library(tidyr)
+#library(dplyr)
+#library(ggplot2)
+#library(effects)
 
-#Data input: working directory 
-setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_SpiderCues_May2016")
+#Source Packages
+source("Packages_source_file.R")
 
-Mon1 <- read.table("DrosophilaActivity_Spider_cues_Monitor1_May2016.txt")
-Mon2 <- read.table("DrosophilaActivity_Spider_cues_Monitor2_May2016.txt")
+
+#Data input: working directory == scripts dir
+#setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_SpiderCues_May2016")
+
+Mon1 <- read.table("../data/Activity_Drosophila_SpiderCues_May2016/DrosophilaActivity_Spider_cues_Monitor1_May2016.txt")
+Mon2 <- read.table("../data/Activity_Drosophila_SpiderCues_May2016/DrosophilaActivity_Spider_cues_Monitor2_May2016.txt")
 
 #Variable for monitor:
 Mon1$V43 <- 1
