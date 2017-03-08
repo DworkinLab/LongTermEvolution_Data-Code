@@ -19,13 +19,13 @@ ComExp2_Mon1 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/
 ComExp2_Mon2 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp2_spi_Vs_Cri_M2.txt")
 
 #Variable for monitor:
-ComExp2_Mon1$Monitor <- 1
-ComExp2_Mon2$Monitor <- 2
+ComExp2_Mon1$monitor <- 1
+ComExp2_Mon2$monitor <- 2
 
 #Comlumn Names:
-colnames(ComExp2_Mon1) <- c("date", "Remove", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4", "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8', 'vial9', 'vial10', 'vial11', 'vial12', 'vial13', 'vial14', 'vial15', 'vial16', 'Monitor')
+colnames(ComExp2_Mon1) <- c("date", "Remove", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4", "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8', 'vial9', 'vial10', 'vial11', 'vial12', 'vial13', 'vial14', 'vial15', 'vial16', 'monitor')
 
-colnames(ComExp2_Mon2) <- c("date", "remove", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4", "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8', 'vial9', 'vial10', 'vial11', 'vial12', 'vial13', 'vial14', 'vial15', 'vial16', 'Monitor')
+colnames(ComExp2_Mon2) <- c("date", "remove", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4", "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8', 'vial9', 'vial10', 'vial11', 'vial12', 'vial13', 'vial14', 'vial15', 'vial16', 'monitor')
 
 #Remove unneeded columns (unknowns and remove):
 ComExp2_Mon1 <- ComExp2_Mon1[,-c(5:9)]
@@ -76,9 +76,9 @@ Complex_2_long <- rbind(ComExp2_Mon1_long, ComExp2_Mon2_long)
 head(Complex_2_long)
 
 #Change to factors:
-Complex_2_long$Monitor <- as.factor(Complex_2_long$Monitor)
+Complex_2_long$monitor <- as.factor(Complex_2_long$monitor)
 Complex_2_long$Treatment <- as.factor(Complex_2_long$Treatment)
 Complex_2_long$day <- as.factor(Complex_2_long$day)
 Complex_2_long$Vial <- as.factor(Complex_2_long$Vial)
 
-#ANalysis:
+#Analysis:
