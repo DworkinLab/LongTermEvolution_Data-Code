@@ -73,12 +73,15 @@ ComExp2_Mon2_long$Treatment <- ifelse(ComExp2_Mon2_long$Vial == "vial9", "Spider
 
 Complex_2_long <- rbind(ComExp2_Mon1_long, ComExp2_Mon2_long)
 
-head(Complex_2_long)
-
 #Change to factors:
 Complex_2_long$monitor <- as.factor(Complex_2_long$monitor)
 Complex_2_long$Treatment <- as.factor(Complex_2_long$Treatment)
 Complex_2_long$day <- as.factor(Complex_2_long$day)
 Complex_2_long$Vial <- as.factor(Complex_2_long$Vial)
 
+
+head(Complex_2_long)
+
+
 #Analysis:
+
