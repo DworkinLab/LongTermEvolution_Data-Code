@@ -54,3 +54,36 @@ head(Exp3_Mon1)
 head(Exp3_Mon2)
 
 #Column Names:
+#Make F or C == Vial1_fly and vial2_cricket. etc.
+#Mon1: date, time, signal,Light, SF SF.1 SF.2 SF.3 SF.4 SF.5 SF.6 SF.7 SC SC.1 SC.2 SC.3 SC.4 SC.5 SC.6 SC.7 F,  F.1 F.2 F.3 F.4 F.5 F.6 F.7 C C.1 C.2 C.3 C.4 C.5 monitor            datetime minute hour day
+colnames(Exp3_Mon1) <- c("date", "time", "signal", "lightON",'vial1_SF', 'vial2_SF', 'vial3_SF', 'vial4_SF', 'vial5_SF', 'vial6_SF', 'vial7_SF', 'vial8_SF', 'vial9_SC', 'vial10_SC', 'vial11_SC', 'vial12_SC', 'vial13_SC', 'vial14_SC', 'vial15_SC', 'vial16_SC','vial17_F','vial18_F','vial19_F','vial20_F','vial21_F','vial22_F','vial23_F','vial24_F','vial25_C','vial26_C','vial27_C','vial28_C','vial29_C','vial30_C', 'monitor','datetime', 'minute', 'hour', 'day')
+
+#Mon2:
+##  date time signal Light  F F.1 F.2 F.3 F.4 F.5 F.6 C C.1 C.2 C.3 C.4 SF SF.1 SF.2 SF.3 SF.4 SF.5 SF.6,  SC SC.1 SC.2 SC.3 SC.4 SC.5 SC.6 SC.7 monitor datetime minute hour day 
+
+colnames(Exp3_Mon2) <- c("date", "time", "signal", "lightON",'vial1_F', 'vial2_F', 'vial3_F', 'vial4_F', 'vial5_F', 'vial6_F', 'vial7_F', 'vial8_C', 'vial9_C', 'vial10_C', 'vial11_C', 'vial12_C', 'vial13_SF', 'vial14_SF', 'vial15_SF', 'vial16_SF','vial17_SF','vial18_SF','vial19_SF','vial20_SC','vial21_SC','vial22_SC','vial23_SC','vial24_SC','vial25_SC','vial26_SC','vial27_SC', 'monitor','datetime', 'minute', 'hour', 'day')
+
+head(Exp3_Mon1)
+head(Exp3_Mon2)
+
+
+##Make long:
+
+
+Exp3_Mon1_long <- gather(Exp3_Mon1, Vial, Activity_counts, vial1_SF:vial30_C, factor_key = FALSE)
+Exp3_Mon2_long <- gather(Exp3_Mon2, Vial, Activity_counts, vial1_F:vial27_SC, factor_key = FALSE)
+
+
+
+## Split vial and treatment (SF, F, SC, and C (or need to change how this is done...))
+Exp3_Mon1_long <- Exp3_Mon1_long %>%
+  separate(vial, c("Vial", "Treatment"), sep = "_")
+
+#Change things to factors
+#Change to factors:
+Exp3_long$monitor <- as.factor(Exp3_long$monitor)
+Exp3_long$Treatment <- as.factor(Exp3_long$Treatment)
+Exp3_long$day <- as.factor(Exp3_long$day)
+Exp3_long$Vial <- as.factor(Exp3_long$Vial)
+
+
