@@ -76,8 +76,18 @@ Exp3_Mon2_long <- gather(Exp3_Mon2, Vial, Activity_counts, vial1_F:vial27_SC, fa
 
 
 ## Split vial and treatment (SF, F, SC, and C (or need to change how this is done...))
+
+
 Exp3_Mon1_long <- Exp3_Mon1_long %>%
-  separate(vial, c("Vial", "Treatment"), sep = "_")
+  separate(Vial, c("Vial", "Treatment"), "_")
+Exp3_Mon2_long <- Exp3_Mon2_long %>%
+  separate(Vial, c("Vial", "Treatment"), "_")
+
+#Combine into one data set:
+Exp3_long <- rbind(Exp3_Mon1_long, Exp3_Mon2_long)
+
+
+
 
 #Change things to factors
 #Change to factors:
@@ -86,4 +96,6 @@ Exp3_long$Treatment <- as.factor(Exp3_long$Treatment)
 Exp3_long$day <- as.factor(Exp3_long$day)
 Exp3_long$Vial <- as.factor(Exp3_long$Vial)
 
+
+#Analysis
 
