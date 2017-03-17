@@ -6,19 +6,16 @@
 #Convert .xlsx to .txt files (and rename to consistant format) online conversion
 #https://www.coolutils.com/online/XLSX-to-TXT
 
-library(lme4)
-library(nlme)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(effects)
+#Working Dir == scripts
 
-#Data input: working directory 
-setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_MantidCues_May2016")
+
+source('Packages_source_file.R')
+
+
 
 #The Data
-MantidMon1 <- read.table("Mantid_Cues_M1.txt")
-MantidMon2 <- read.table("Mantid_Cues_M2.txt")
+MantidMon1 <- read.table("../data/Activity_Drosophila_MantidCues_May2016/Mantid_Cues_M1.txt")
+MantidMon2 <- read.table("../data/Activity_Drosophila_MantidCues_May2016/Mantid_Cues_M2.txt")
 
 head(MantidMon1)
 head(MantidMon2)

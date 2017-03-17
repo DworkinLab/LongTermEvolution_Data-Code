@@ -1,59 +1,20 @@
 # File with summary of data and models
+#Not working: forget about for now...
 ```{r, echo=FALSE, warning=FALSE, include=FALSE}
-#Multiplots:
-#From: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  library(grid)
-
-  # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
-
-  numPlots = length(plots)
-
-  # If layout is NULL, then use 'cols' to determine layout
-  if (is.null(layout)) {
-    # Make the panel
-    # ncol: Number of columns of plots
-    # nrow: Number of rows needed, calculated from # of cols
-    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                    ncol = cols, nrow = ceiling(numPlots/cols))
-  }
-
- if (numPlots==1) {
-    print(plots[[1]])
-
-  } else {
-    # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-
-    # Make each plot, in the correct location
-    for (i in 1:numPlots) {
-      # Get the i,j matrix positions of the regions that contain this subplot
-      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                      layout.pos.col = matchidx$col))
-    }
-  }
-}
-```
-
-
-```{r, echo=FALSE, warning=FALSE, include=FALSE}
+#Starting from open
+setwd("~/LongTermEvolution_Data-Code/Predation_ActivityAggregation/scripts")
 #Evolution Pop's: Activity
+list=(ls())
 
-source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/scripts/PredationActivityAnalysisJune2015.R")
+source("PredationActivityAnalysisJune2015.R")
 
 #Nieve Flies: Activity
 
-source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/scripts/ActivityDrosophila_SpiderCues_Nieve.R")
+source("ActivityDrosophila_SpiderCues_Nieve.R")
 
 
 #Evolved Pop's: Mating Behaviours
-
-source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/scripts/AP_data_R_script.R")
+#source("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/scripts/AP_data_R_script.R")
 ```
 
 

@@ -1,0 +1,19 @@
+---
+title: "Activity data together"
+
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+#Source files
+
+source('Packages_source_file.R')
+source('ActivityDrosophila_ComplexCues_EXP2.R')
+source('ActivityDrosophila_ComplexCues_EXP3.R')
+source('ActivityDrosophila_MantidCues_Naive.R')
+source('ActivityDrosophila_SpiderCues_Nieve.R')
+source('PredationActivityAnalysisJune2015.R')
+```
+
+```{r}
+
+```

@@ -9,25 +9,26 @@
 # Each individual was run for only 24 hours in the activity monitors.
 
 #libraries
-library(lme4)
+#library(lme4)
 #Data input
 #setwd("../data")
 #setwd("/Users/ian/Projects_current/Predation_Social/data")
 #dir() 
 
 # the actual data are as tab delimited txt files.
-setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/Predation_ActivityAggregation/data/Activity_Drosophila_EvolvedPops_May2015")
-DAM1 <- read.table("PredationActivityDAM1_May2015_RD.txt")
+
+DAM1 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM1_May2015_RD.txt")
+
 # Create a new variable for the DAM monitor ID
 DAM1$v45 <- 1
 
-DAM2 <- read.table("PredationActivityDAM2_May2015_RD.txt")
+DAM2 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM2_May2015_RD.txt")
 DAM2$v45 <- 2
 DAM_data <- rbind(DAM1, DAM2)
 
 
 # Sample information is in a seperate csv
-sample_info <- read.csv("Predation_ActivityMetaData_May2015_RD.csv")
+sample_info <- read.csv("../data/Activity_Drosophila_EvolvedPops_May2015/Predation_ActivityMetaData_May2015_RD.csv")
 
 colnames(DAM_data) <- c("bin", "day", "month", "year", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4",
                         "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8',
