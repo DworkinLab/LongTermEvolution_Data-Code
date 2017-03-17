@@ -70,8 +70,8 @@ head(Exp3_Mon2)
 ##Make long:
 
 
-Exp3_Mon1_long <- gather(Exp3_Mon1, Vial, Activity_counts, vial1_SF:vial30_C, factor_key = FALSE)
-Exp3_Mon2_long <- gather(Exp3_Mon2, Vial, Activity_counts, vial1_F:vial27_SC, factor_key = FALSE)
+Exp3_Mon1_long <- gather(Exp3_Mon1, Vial, activity_counts, vial1_SF:vial30_C, factor_key = FALSE)
+Exp3_Mon2_long <- gather(Exp3_Mon2, Vial, activity_counts, vial1_F:vial27_SC, factor_key = FALSE)
 
 
 
@@ -97,5 +97,23 @@ Exp3_long$day <- as.factor(Exp3_long$day)
 Exp3_long$Vial <- as.factor(Exp3_long$Vial)
 
 
-#Analysis
+#Analysis:
+
+#simple plot with no changes at all... no change.....
+with(Exp3_long[Exp3_long$Treatment=="SC",], 
+     plot(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2,
+          xlab ="hours after initiation", ylab = "hourly activity",
+          main = "Activity: Lab Flies ", 
+          ylim=c(0,20)))
+
+with(Exp3_long[Exp3_long$Treatment=="SC",], lines(smooth.spline(y=activity_counts, x = hour),lwd=2))
+
+with(Exp3_long[Exp3_long$Treatment=="SF",], points(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2, col="red"))
+with(Exp3_long[Exp3_long$Treatment=="SF",], lines(smooth.spline(y=activity_counts, x = hour), col="red", lwd=2))
+with(Exp3_long[Exp3_long$Treatment=="C",], points(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2, col="blue"))
+with(Exp3_long[Exp3_long$Treatment=="C",], lines(smooth.spline(y=activity_counts, x = hour), col="blue", lwd=2))
+with(Exp3_long[Exp3_long$Treatment=="F",], points(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2, col="green"))
+with(Exp3_long[Exp3_long$Treatment=="F",], lines(smooth.spline(y=activity_counts, x = hour), col="green", lwd=2))
+
+legend(x=22, y=20, legend=c("SC", "SF","C","F"), pch=20, col=c(1, "red", "blue", "green"))
 
