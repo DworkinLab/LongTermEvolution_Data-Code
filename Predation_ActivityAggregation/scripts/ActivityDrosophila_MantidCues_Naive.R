@@ -141,7 +141,7 @@ lines(lowess(Mantid_hour$activity_counts ~ Mantid_hour$hour_shift, f=0.1), col="
 with(Mantid_hour[Mantid_hour$Treatment=="Control",], 
      plot(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2,
           xlab ="hours after initiation", ylab = "hourly activity",
-          main = "Activity: Lab Flies ",
+          main = "Activity: Lab Flies with Mantid Cues ",
           ylim=c(0,100)))
 
 with(Mantid_hour[Mantid_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift),lwd=2))
