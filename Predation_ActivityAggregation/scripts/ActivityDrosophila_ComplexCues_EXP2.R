@@ -82,6 +82,30 @@ Complex_2_long$Vial <- as.factor(Complex_2_long$Vial)
 
 head(Complex_2_long)
 
+#dd <- Complex_2_long %>%
+#  group_by(Treatment) %>%
+#  summarise(mean_Daily_activity=mean(Activity_counts))
+
 
 #Analysis:
+with(Complex_2_long, plot(x = Treatment, y= Activity_counts))
+
+
+summary(Complex_2_long)
+#Lights off at 22:00 , on again at 10:00
+#STart time == 12:00, end = 13:59
+#-- hours == hours
+
+
+with(Complex_2_long[Complex_2_long$Treatment=="Spider",], 
+     plot(Activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2,
+          xlab ="hour", ylab = "hourly activity",
+          main = "Activity: Lab Flies ", 
+          ylim=c(0,20)))
+
+with(Complex_2_long[Complex_2_long$Treatment=="Spider",], lines(smooth.spline(y=Activity_counts, x = hour),lwd=2))
+
+with(Complex_2_long[Complex_2_long$Treatment=="Cricket",], points(Activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2, col="red"))
+with(Complex_2_long[Complex_2_long$Treatment=="Cricket",], lines(smooth.spline(y=Activity_counts, x = hour), col="red", lwd=2))
+legend(x=21.3, y=20.5, legend=c("Spider", "Cricket"), pch=20, col=c(1, "red"))
 

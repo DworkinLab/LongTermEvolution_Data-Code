@@ -66,6 +66,10 @@ MantidMon1_long$Treatment <- ifelse(MantidMon1_long$Vial == "vial1", "Mantid", i
 
 MantidMon2_long$Treatment <- ifelse(MantidMon2_long$Vial == "vial1", "Control", ifelse (MantidMon2_long$Vial == "vial2", "Control", ifelse(MantidMon2_long$Vial == "vial3", "Control", ifelse(MantidMon2_long$Vial == "vial4", "Control", ifelse(MantidMon2_long$Vial == "vial5", "Control", ifelse(MantidMon2_long$Vial == "vial6", "Control", ifelse(MantidMon2_long$Vial == "vial7", "Control", ifelse(MantidMon2_long$Vial == "vial8", "Control","Mantid"))))))))
 
+
+#NEED TO ADJUST (HOUR SHIFT) HERE!
+
+
 Mantid_long <- rbind(MantidMon1_long, MantidMon2_long)
 
 head(Mantid_long)
@@ -90,11 +94,16 @@ Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop
 ##Possibly need to shift times to start of experiment?
 #head(Mon1)
 #head(Mon2)
+
+tail(MantidMon2)
 MantidMon2$time
+MantidMon1$time <- as.numeric(MantidMon1$time)
+# Mantid Mon 1 has different start time: 11:31 -- 11:30
 #Start time = first reading == 14:01
+#Last reading == 14:00
 #shift times by 1 hours:
 Mantid_hour$hour <- as.numeric(Mantid_hour$hour)
-Mantid_hour$hour_shift <- ifelse(Mantid_hour$hour >= 14, (Mantid_hour$hour - 14), (Mantid_hour$hour +10))
+Mantid_hour$hour_shift <- ifelse(Mantid_hour$hour > 14, (Mantid_hour$hour - 14), (Mantid_hour$hour +10))
 
 
 Mantid_hour$hour_shift <- as.factor(Mantid_hour$hour_shift)
@@ -133,6 +142,8 @@ acf(resid(man_correl_mod))
 Mantid_hour$hour_shift <- as.numeric(Mantid_hour$hour_shift)
 
 
+head(Mantid_hour)
+#What is this plot: lookslike all activity together?
 with(Mantid_hour, plot(activity_counts ~ jitter(hour_shift), pch=20, cex=0.1))
 lines(smooth.spline(y=Mantid_hour$activity_counts, x = Mantid_hour$hour_shift))
 lines(lowess(Mantid_hour$activity_counts ~ Mantid_hour$hour_shift, f=0.1), col="red")
@@ -144,7 +155,7 @@ with(Mantid_hour[Mantid_hour$Treatment=="Control",],
           main = "Activity: Lab Flies with Mantid Cues ",
           ylim=c(0,100)))
 
-with(Mantid_hour[Mantid_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift),lwd=2))
+with(Mantid_hour[Mantid_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour_shift), col="Black", lwd=2))
 
 with(Mantid_hour[Mantid_hour$Treatment=="Mantid",], points(activity_counts ~ jitter(hour_shift, factor=1.3), pch=20, cex=0.2, col="red"))
 with(Mantid_hour[Mantid_hour$Treatment=="Mantid",], lines(smooth.spline(y=activity_counts, x = hour_shift), col="red", lwd=2))

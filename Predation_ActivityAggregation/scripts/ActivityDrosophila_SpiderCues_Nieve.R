@@ -226,6 +226,6 @@ legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
 
 #Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
 rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
-rect(xleft=22, xright=24, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+rect(xleft=22, xright=25, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 
 

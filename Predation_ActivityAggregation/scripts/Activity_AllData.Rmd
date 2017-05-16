@@ -3,7 +3,7 @@ title: "Activity data together"
 
 ---
 
-```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+```{r setup, warning=FALSE, echo=FALSE}
 #Source files
 
 source('Packages_source_file.R')
