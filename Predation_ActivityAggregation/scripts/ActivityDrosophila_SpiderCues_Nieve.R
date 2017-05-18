@@ -229,5 +229,7 @@ rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 rect(xleft=22, xright=25, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 
 #Change plot to hours starting at light and ending at dark:
+#Change to have hours after initiation; block into regions of hours (i.e looking at "daily" activity plots; but break into sections like the first few hours or light vs. Dark)
+
 head(act_hour)
 act_hour$hour <- as.numeric(act_hour$hour)
