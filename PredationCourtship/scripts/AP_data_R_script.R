@@ -54,22 +54,35 @@ AP_evolved_data <- read.csv("AP_EvolvedPopCourtshipCopulation_2014.csv", h=T)
 #Start time of agebin 4 not recorded: so removed
 AP_evolved_data <- AP_evolved_data[-which(AP_evolved_data$Bin4 == "" & AP_evolved_data$AgeBin =="4"),]
 #Make relative start times:
+head(AP_evolved_data)
 AP_evolved_data$StartTime <- as.difftime(as.character(AP_evolved_data$StartTime), format = "%H:%M", units = "secs")
+
 AP_evolved_data$CourtshipLatency <- as.difftime(as.character(AP_evolved_data$CourtshipLatency), format = "%H:%M", units = "secs")
+
 AP_evolved_data$Bin2 <- as.difftime(as.character(AP_evolved_data$Bin2), format = "%H:%M", units = "secs")
+
 AP_evolved_data$Bin3 <- as.difftime(as.character(AP_evolved_data$Bin3), format = "%H:%M", units = "secs")
+
 AP_evolved_data$Bin4 <- as.difftime(as.character(AP_evolved_data$Bin4), format = "%H:%M", units = "secs")
+
 AP_evolved_data$CopulationLatency <- as.difftime(as.character(AP_evolved_data$CopulationLatency), format = "%H:%M", units = "secs")
+
 AP_evolved_data$CopulationDuration <- as.difftime(as.character(AP_evolved_data$CopulationDuration), format = "%H:%M", units = "secs")
 
+head(AP_evolved_data)
+#Needs to be based on the age bin start time!
 AP_evolved_data$CourtshipLatency <- with(AP_evolved_data, CourtshipLatency - StartTime)
+
 AP_evolved_data$CopulationLatency <- with(AP_evolved_data, CopulationLatency - StartTime)
+
+#Wrong: should be from time of copulation latency!
 AP_evolved_data$CopulationDuration <- with(AP_evolved_data, CopulationDuration - StartTime)
+
 AP_evolved_data$Bin2 <- with(AP_evolved_data, Bin2 - StartTime)
 AP_evolved_data$Bin3 <- with(AP_evolved_data, Bin3 - StartTime)
 AP_evolved_data$Bin4 <- with(AP_evolved_data, Bin4 - StartTime)
 AP_evolved_data$Bin1 <- with(AP_evolved_data, StartTime - StartTime)
-
+head(AP_evolved_data)
 
 #Relative start times for each thing
 
@@ -80,6 +93,7 @@ AP_evolved_data <- within(AP_evolved_data, {
 AP_evolved_data <- within(AP_evolved_data, { 
   Rel_Cop_lat = ifelse (AgeBin == 1, CopulationLatency-Bin1, ifelse(AgeBin == 2, CopulationLatency-Bin2, ifelse(AgeBin == 3, CopulationLatency-Bin3, ifelse(AgeBin == 4, CopulationLatency-Bin4, 0))))})
 
+#Wrong: should be after copulation latency!
 AP_evolved_data <- within(AP_evolved_data, { 
   Rel_Cop_dur = ifelse (AgeBin == 1, CopulationDuration-Bin1, ifelse(AgeBin == 2, CopulationDuration-Bin2, ifelse(AgeBin == 3, CopulationDuration-Bin3, ifelse(AgeBin == 4, CopulationDuration-Bin4, 0))))})
 
@@ -109,19 +123,19 @@ p4 <- ggplot(AP_groups, aes(x=Treatment, y = mean_cop_dur))
 p5 <- ggplot(AP_groups, aes(x=Rep, y=cop_sum, colour=Treatment))
 
 #p1+geom_point()
-#p1+geom_boxplot()
+p1+geom_boxplot()
 
 #p2+geom_point()
-#p2+geom_boxplot()
+p2+geom_boxplot()
 
 #p3+geom_point()
-#p3+geom_boxplot()
+p3+geom_boxplot()
 
 #p4+geom_point()
-#p4+geom_boxplot()
+p4+geom_boxplot()
 
 #p5+geom_point()
-#p5+geom_boxplot()
+p5+geom_boxplot()
 
 
 #head(AP_Data)
@@ -133,6 +147,7 @@ p7 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_lat))
 p8 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
 p9 <- ggplot(AP_Data, aes(x=Treatment, y = Copulation), ylab("Copulation"))
 
+#Units are millisecond (1sec = 1000 milliseconds ((something not right)))
 aaa <- p6+geom_boxplot() +
   ylab("Courtship Latency (sec)")
 bbb <- p7+geom_boxplot() +
