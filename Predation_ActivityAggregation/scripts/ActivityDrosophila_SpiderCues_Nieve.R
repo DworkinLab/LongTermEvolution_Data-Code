@@ -151,11 +151,14 @@ with(act_hour, boxplot(activity_counts ~ hour))
 act_hour$hour <- as.factor(act_hour$hour)
 hour_gg <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment))
 hour_gg + geom_boxplot()
-hour_gg + geom_jitter()
+gg1 <- hour_gg + geom_jitter()
+gg2 <- stat_summary(aes(y=act_hour$activity_counts,group="Spider"), fun.y=mean, geom="line", colour="green")
+
+gg3 <- stat_summary(aes(y=act_hour$activity_counts,group="Control"), fun.y=mean, geom="line", colour="red")
 
 
-
-
+gg1 + gg2 + gg3
+  
 ##Possibly need to shift times to start of experiment?
 #head(Mon1)
 #head(Mon2)
