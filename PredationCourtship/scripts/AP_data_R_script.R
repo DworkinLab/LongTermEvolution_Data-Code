@@ -50,6 +50,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 #Change working directory to the Data folder (if from script folder to start)!
 #setwd("~/Bioinformatics/Long_Term_Data/Data_LongTermPopulationExperiments_Git/PredationCourtship/data")
 AP_evolved_data <- read.csv("AP_EvolvedPopCourtshipCopulation_2014.csv", h=T)
+AP_start <- AP_evolved_data
 
 #Start time of agebin 4 not recorded: so removed
 AP_evolved_data <- AP_evolved_data[-which(AP_evolved_data$Bin4 == "" & AP_evolved_data$AgeBin =="4"),]
@@ -86,6 +87,8 @@ head(AP_evolved_data)
 
 #Relative start times for each thing
 
+#AP_evolved_data$Bin1 <- AP_evolved_data$StartTime
+
 AP_evolved_data <- within(AP_evolved_data, { 
   Rel_Court_lat = ifelse (AgeBin == 1, CourtshipLatency-Bin1, ifelse(AgeBin == 2, CourtshipLatency-Bin2, ifelse(AgeBin == 3, CourtshipLatency-Bin3, ifelse(AgeBin == 4, CourtshipLatency-Bin4, 0))))})
 
@@ -94,8 +97,9 @@ AP_evolved_data <- within(AP_evolved_data, {
   Rel_Cop_lat = ifelse (AgeBin == 1, CopulationLatency-Bin1, ifelse(AgeBin == 2, CopulationLatency-Bin2, ifelse(AgeBin == 3, CopulationLatency-Bin3, ifelse(AgeBin == 4, CopulationLatency-Bin4, 0))))})
 
 #Wrong: should be after copulation latency!
-AP_evolved_data <- within(AP_evolved_data, { 
-  Rel_Cop_dur = ifelse (AgeBin == 1, CopulationDuration-Bin1, ifelse(AgeBin == 2, CopulationDuration-Bin2, ifelse(AgeBin == 3, CopulationDuration-Bin3, ifelse(AgeBin == 4, CopulationDuration-Bin4, 0))))})
+#AP_evolved_data <- within(AP_evolved_data, { 
+#  Rel_Cop_dur = ifelse (AgeBin == 1, CopulationDuration-Bin1, ifelse(AgeBin == 2, CopulationDuration-Bin2, ifelse(AgeBin == 3, CopulationDuration-Bin3, ifelse(AgeBin == 4, CopulationDuration-Bin4, 0))))})
+AP_evolved_data$Rel_Cop_dur <- AP_evolved_data$CopulationDuration - AP_evolved_data$CopulationLatency 
 
 head(AP_evolved_data)
 #New Data frame with only important data:
