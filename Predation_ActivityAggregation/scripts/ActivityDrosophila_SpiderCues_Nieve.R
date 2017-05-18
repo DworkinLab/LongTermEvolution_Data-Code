@@ -85,6 +85,7 @@ Act_long$monitor <- as.factor(Act_long$monitor)
 Act_long$Treatment <- as.factor(Act_long$Treatment)
 Act_long$day <- as.factor(Act_long$day)
 Act_long$Vial <- as.factor(Act_long$Vial)
+
 #Quick look at daily activity
 
 day_act <- Act_long %>%
@@ -100,8 +101,8 @@ day_act <- Act_long %>%
 #p1 <- ggplot(data = day_act, aes(x = monitor, y = mean_activity, colour = Treatment))
 #p1+geom_boxplot()
 
-plo2 <- ggplot(data = day_act, aes(x = Treatment, y = mean_activity, colour = monitor))
-plo2+geom_boxplot()
+#plo2 <- ggplot(data = day_act, aes(x = Treatment, y = mean_activity, colour = monitor))
+#plo2+geom_boxplot()
 
 plo3 <- ggplot(data = day_act, aes(Treatment, mean_activity))
 plo3+geom_boxplot()
@@ -150,6 +151,9 @@ with(act_hour, boxplot(activity_counts ~ hour))
 act_hour$hour <- as.factor(act_hour$hour)
 hour_gg <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment))
 hour_gg + geom_boxplot()
+hour_gg + geom_jitter()
+
+
 
 
 ##Possibly need to shift times to start of experiment?
