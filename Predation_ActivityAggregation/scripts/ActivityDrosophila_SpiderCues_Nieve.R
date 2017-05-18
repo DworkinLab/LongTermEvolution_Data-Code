@@ -203,9 +203,9 @@ acf(resid(act_cor_light_mod))
 act_hour$hour_shift <- as.numeric(act_hour$hour_shift)
 
 
-with(act_hour, plot(activity_counts ~ jitter(hour_shift), pch=20, cex=0.1))
-lines(smooth.spline(y=act_hour$activity_counts, x = act_hour$hour_shift))
-lines(lowess(act_hour$activity_counts ~ act_hour$hour_shift, f=0.1), col="red")
+#with(act_hour, plot(activity_counts ~ jitter(hour_shift), pch=20, cex=0.1))
+#lines(smooth.spline(y=act_hour$activity_counts, x = act_hour$hour_shift))
+#lines(lowess(act_hour$activity_counts ~ act_hour$hour_shift, f=0.1), col="red")
 
 
 with(act_hour[act_hour$Treatment=="Control",], 
@@ -228,4 +228,6 @@ legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
 rect(xleft=0, xright=10, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 rect(xleft=22, xright=25, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 
-
+#Change plot to hours starting at light and ending at dark:
+head(act_hour)
+act_hour$hour <- as.numeric(act_hour$hour)
