@@ -153,25 +153,22 @@ with(act_hour, boxplot(activity_counts ~ hour))
 
 #My Boxplot
 act_hour$hour <- as.factor(act_hour$hour)
+
 hour_gg <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment))
 hour_gg + geom_boxplot()
 
 gg1 <- hour_gg + geom_jitter()
+gg1 + geom_smooth()
 
-act_hour_spi <- filter(act_hour, Treatment=='Spider')
-act_hour_con <- filter(act_hour, Treatment=='Control')
+act_hour$activity_counts <- as.numeric(act_hour$activity_counts)s
+act_hour$hour <- as.numeric(act_hour$hour)
 
-gg2 <- stat_summary(aes(y=act_hour_spi$activity_counts,group="Spider"), fun.y=mean, geom="line", colour="green")
-
-gg3 <- stat_summary(aes(y=act_hour_con$activity_counts,group="Control"), fun.y=mean, geom="line", colour="red")
-
-  #geom_line(aes(y = var0, colour = "var0")) + 
-  #geom_line(aes(y = var1, colour = "var1"))
-#gg1 + gg3 +gg2
-
-gg1 + geom_smooth(method="mean", formula =x~y ,aes(colour="Treatment"))
-
-
+gg5 <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,24) + ylim(0,400)
+gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
+#gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
+gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
+               xmin = 10, xmax = 22,
+               ymin = 0, ymax = 600) 
 
 
 ##Possibly need to shift times to start of experiment?
