@@ -131,8 +131,8 @@ head(Exp3_hour)
 #Exp3_hour$hour_shift <- as.factor(Exp3_hour$hour_shift)
 Exp3_hour$hour.shift <- as.numeric(Exp3_hour$hour.shift)
 
-Exp3_hour_gg <- ggplot(Exp3_hour, aes(x=hour.shift, y= activity_counts, colour=Treatment))
-Exp3_hour_gg + geom_boxplot()
+#Exp3_hour_gg <- ggplot(Exp3_hour, aes(x=hour.shift, y= activity_counts, colour=Treatment))
+#Exp3_hour_gg + geom_boxplot()
 
 
 
@@ -190,3 +190,25 @@ legend(x=0, y=400, legend=c("SC", "SF","C","F"), pch=20, col=c(1, "red", "blue",
 
 rect(xleft=0, xright=10, ybottom = 0, ytop = 400, col="#ffff0032", border=NA)
 rect(xleft=22, xright=26.5, ybottom = 0, ytop = 400, col="#ffff0032", border=NA)
+
+
+#New mehod for ggplot:
+Exp3_hour
+Exp3_hour$activity_counts <- as.numeric(Exp3_hour$activity_counts)
+Exp3_hour$hour <- as.numeric(Exp3_hour$hour)
+
+gg5 <- ggplot(Exp3_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,400)
+gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
+#gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
+gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
+               xmin = 10, xmax = 22,
+               ymin = 0, ymax = 500) +
+  geom_vline(xintercept = 12)
+
+#Put a mark for initiation point?
+#start == 12:11
+
+#Model Quickly
+exp3.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Exp3_hour)
+summary(exp3.mod)
+pacf(resid(exp3.mod))

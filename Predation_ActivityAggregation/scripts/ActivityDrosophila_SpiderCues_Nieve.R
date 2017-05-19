@@ -283,8 +283,9 @@ gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
 #gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
 gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
-               ymin = 0, ymax = 600) 
+               ymin = 0, ymax = 600) + geom_vline(xintercept = 12)
 ## missing values removed?? based on the limits (hashed out)
+##Vline== initiation of experiment
 
 #Light effects:
 act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
