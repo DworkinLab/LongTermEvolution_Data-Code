@@ -168,8 +168,8 @@ gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
 #gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
 gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
-               ymin = 0, ymax = 600) 
-
+               ymin = 0, ymax = 400) 
+#check geom_smooth method!
 
 ##Possibly need to shift times to start of experiment?
 #head(Mon1)
@@ -252,3 +252,23 @@ rect(xleft=22, xright=25, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
 
 head(act_hour)
 act_hour$hour <- as.numeric(act_hour$hour)
+
+#Hour
+with(act_hour[act_hour$Treatment=="Control",], 
+     plot(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2,
+          xlab ="hour", ylab = "hourly activity",
+          main = "Activity: Lab Flies ",
+          ylim=c(0,400)))
+
+with(act_hour[act_hour$Treatment=="Control",], lines(smooth.spline(y=activity_counts, x = hour),lwd=2))
+
+with(act_hour[act_hour$Treatment=="Spider",], points(activity_counts ~ jitter(hour, factor=1.3), pch=20, cex=0.2, col="red"))
+with(act_hour[act_hour$Treatment=="Spider",], lines(smooth.spline(y=activity_counts, x = hour), col="red", lwd=2))
+
+
+legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
+
+#Check that the rectangle is for light! == Yes == Remember -- actually off by ~ few minutes of light vs. Dark (10:05...)
+
+#Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
+rect(xleft=10, xright=22, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
