@@ -157,14 +157,21 @@ hour_gg <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment))
 hour_gg + geom_boxplot()
 
 gg1 <- hour_gg + geom_jitter()
-gg2 <- stat_summary(aes(y=act_hour$activity_counts,group="Spider"), fun.y=mean, geom="line", colour="green")
 
-gg3 <- stat_summary(aes(y=act_hour$activity_counts,group="Control"), fun.y=mean, geom="line", colour="red")
+act_hour_spi <- filter(act_hour, Treatment=='Spider')
+act_hour_con <- filter(act_hour, Treatment=='Control')
+
+gg2 <- stat_summary(aes(y=act_hour_spi$activity_counts,group="Spider"), fun.y=mean, geom="line", colour="green")
+
+gg3 <- stat_summary(aes(y=act_hour_con$activity_counts,group="Control"), fun.y=mean, geom="line", colour="red")
 
   #geom_line(aes(y = var0, colour = "var0")) + 
   #geom_line(aes(y = var1, colour = "var1"))
-gg1 + gg3 + gg2
-  
+#gg1 + gg3 +gg2
+
+gg1 + geom_smooth(method="mean", formula =x~y ,aes(colour="Treatment"))
+
+
 
 
 ##Possibly need to shift times to start of experiment?
