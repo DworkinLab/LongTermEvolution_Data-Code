@@ -160,7 +160,7 @@ hour_gg + geom_boxplot()
 gg1 <- hour_gg + geom_jitter()
 gg1 + geom_smooth()
 
-act_hour$activity_counts <- as.numeric(act_hour$activity_counts)s
+act_hour$activity_counts <- as.numeric(act_hour$activity_counts)
 act_hour$hour <- as.numeric(act_hour$hour)
 
 gg5 <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,24) + ylim(0,400)
@@ -272,3 +272,39 @@ legend(x=15, y=400, legend=c("Control", "Spider"), pch=20, col=c(1, "red"))
 
 #Change when lights went on.. 10:00 am, start was noon (lights already on..., off at 10 at night -- shift == off at "10" after 0, on at 22)
 rect(xleft=10, xright=22, ybottom = 0, ytop = 830, col="#ffff0032", border=NA)
+
+
+# Reanalyze after committee meeting (taking much from above -- but more official)
+act_hour$activity_counts <- as.numeric(act_hour$activity_counts)
+act_hour$hour <- as.numeric(act_hour$hour)
+
+gg5 <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment))  #+ ylim(0,400) #+ xlim(0,24)
+gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
+#gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
+gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
+               xmin = 10, xmax = 22,
+               ymin = 0, ymax = 600) 
+## missing values removed?? based on the limits (hashed out)
+
+#Light effects:
+act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+
+hour.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=act_hour)
+summary(hour.mod)
+pacf(resid(hour.mod))
+
+correl_mod <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=act_hour)
+anova(correl_mod)
+summary(correl_mod)
+acf(resid(correl_mod))
+
+#With light
+act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
+summary(act_cor_light_mod)
+confint(act_cor_light_mod)
+acf(resid(act_cor_light_mod))
+
+#Days seem weird: visulaize
+dayeffect_gg <- ggplot(act_hour, aes(x=Treatment, y= activity_counts, colour=day))
+dayeffect_gg + geom_boxplot()
+
