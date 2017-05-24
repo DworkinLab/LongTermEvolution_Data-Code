@@ -115,10 +115,9 @@ Exp2_hour <- Complex_2_long %>%
   group_by(Treatment, Vial, monitor, day, hour, hour) %>%
   summarise(activity_counts=sum(Activity_counts))
 
-gg5 <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,400)
+gg5 <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,25) + ylim(0,400)
 gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
 #gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
 gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
-               ymin = 0, ymax = 500) +
-  geom_vline(xintercept = 12)
+               ymin = 0, ymax = 400)# + geom_vline(xintercept = 12)
