@@ -346,4 +346,5 @@ legend(x=21, y=0.9, legend=c("LTC", "LTP", "LTS"), pch=20, col=c(1, "red", "blue
 rect(xleft=2, xright=14, ybottom = 0, ytop = 1, col="#ffff0032", border=NA)
 
 
+
    
