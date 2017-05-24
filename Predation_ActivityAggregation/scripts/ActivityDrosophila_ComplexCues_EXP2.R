@@ -109,3 +109,16 @@ with(Complex_2_long[Complex_2_long$Treatment=="Cricket",], points(Activity_count
 with(Complex_2_long[Complex_2_long$Treatment=="Cricket",], lines(smooth.spline(y=Activity_counts, x = hour), col="red", lwd=2))
 legend(x=21.3, y=20.5, legend=c("Spider", "Cricket"), pch=20, col=c(1, "red"))
 
+head(Complex_2_long)
+
+Exp2_hour <- Complex_2_long %>%
+  group_by(Treatment, Vial, monitor, day, hour, hour) %>%
+  summarise(activity_counts=sum(Activity_counts))
+
+gg5 <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,400)
+gg6 <- gg5 + geom_jitter(size=0.5) + geom_smooth(size=1)
+#gg6 + geom_rect(aes(xmin=10, xmax=22, ymin=0, ymax=600), fill="yellow", alpha=0.5)
+gg6 + annotate("rect", fill = "yellow", alpha = 0.2, 
+               xmin = 10, xmax = 22,
+               ymin = 0, ymax = 500) +
+  geom_vline(xintercept = 12)

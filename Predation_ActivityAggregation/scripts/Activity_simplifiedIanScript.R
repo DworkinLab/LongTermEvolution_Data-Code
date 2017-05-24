@@ -55,7 +55,7 @@ DAM_long$start_day <- ifelse( (DAM_long$day %in% start_day), DAM_long$day, (DAM_
 
 DAM_long$day.vial <- interaction(DAM_long$start_day, DAM_long$vial)
 
-DAM_long2 <- merge(DAM_long, sample_info, by="day.vial")
+DAM_long3 <- merge(DAM_long, sample_info, by="day.vial")
 
 head(DAM_long2)
 
