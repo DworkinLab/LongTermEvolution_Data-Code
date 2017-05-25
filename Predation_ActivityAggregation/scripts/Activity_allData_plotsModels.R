@@ -1,5 +1,7 @@
 #Activity All Data: Plots and Models
 
+#https://stats.idre.ucla.edu/r/faq/how-can-i-explore-different-smooths-in-ggplot2/
+
 source("Activity_cleanAllData.R")
 
 ### Data Available:
