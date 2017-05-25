@@ -20,26 +20,107 @@ source('Activity_cleanAllData.R')
 source("Activity_allData_plotsModels.R")
 ```
 
+
+### Evolved Populations:
+Plot:
 ```{r, echo=FALSE, warning=FALSE}
 print(LT_plot2)
 ```
+Model:
 
+```
+hour.mod <- lm(Hourly_activity ~ Trt + Trt:Population + hour + monitor + start_day,data=dat.hourly)
+```
+```{r}
+summary(hour.mod)
+```
+
+```
+# Accounting for the auto-correlation
+gls.mod <- gls(Hourly_activity ~ Trt + Trt:Population + hour + monitor + start_day,
+    correlation = corAR1(form =~hour|individual),
+    data=dat.hourly)
+```  
+
+```{r}
+anova(gls.mod)
+
+summary(gls.mod)
+```
+
+```
+gls.mod.2 <- gls(Hourly_activity ~ Trt + Trt:Population + light + light:Trt +  hour + monitor + start_day,
+    correlation = corAR1(form =~hour|individual),
+    data=dat.hourly)  
+```
+
+```{r}
+summary(gls.mod.2)
+```
+
+
+
+### Mantid Cues
 ```{r, echo=FALSE, warning=FALSE}
 print(Man_plot2)
 
 ```
 
+
+### Spider Cues
+Plot:
 ```{r, echo=FALSE, warning=FALSE}
 print(spi_plot2)
-
 ```
 
+Model:
+
+```
+hour.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=act_hour)
+```
+```{r}
+summary(hour.mod)
+pacf(resid(hour.mod))
+```
+
+```
+correl_mod <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=act_hour)
+```
+```{r}
+anova(correl_mod)
+summary(correl_mod)
+acf(resid(correl_mod))
+```
+
+```
+act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
+```
+
+```{r}
+summary(act_cor_light_mod)
+confint(act_cor_light_mod)
+acf(resid(act_cor_light_mod))
+```
+
+### Complex Cues: Experiment 2 (Crickets vs. Spiders)
 ```{r, echo=FALSE, warning=FALSE}
 print(Exp2_plot2)
 
 ```
 
+
+### Complex Cues: Experiment 3: Crickets, Flies, Spiders fed crickets and spiders fed flies
+
 ```{r, echo=FALSE, warning=FALSE}
 print(Exp3_plot2)
+```
 
+```
+exp3.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Exp3_hour)
+
+```
+
+```{r}
+summary(exp3.mod)
+pacf(resid(exp3.mod))
 ```

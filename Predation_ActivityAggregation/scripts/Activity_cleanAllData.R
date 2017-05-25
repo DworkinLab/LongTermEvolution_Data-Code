@@ -322,8 +322,7 @@ Mantid_hour <- Mantid_long %>%
   summarise(activity_counts = sum(Activity_counts))
 
 Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop=FALSE))
-
-
+Mantid_hour$light <- with(Mantid_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 
 ################# Spider Cues
@@ -389,6 +388,7 @@ act_hour <- Act_long %>%
   group_by(Treatment, Vial, monitor, day, hour) %>%
   summarise(activity_counts = sum(Activity_counts))
 
+act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 
 #### For all: have Activity in long format and activity by hour
