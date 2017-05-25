@@ -3,18 +3,43 @@ title: "Activity data together"
 
 ---
 
-```{r setup, warning=FALSE, echo=FALSE}
+```{r setup, warning=FALSE, echo=FALSE, include=FALSE}
 #Source files
 
 source('Packages_source_file.R')
-source('ActivityDrosophila_ComplexCues_EXP2.R')
-source('ActivityDrosophila_ComplexCues_EXP3.R')
-source('ActivityDrosophila_MantidCues_Naive.R')
-source('ActivityDrosophila_SpiderCues_Nieve.R')
-source('PredationActivityAnalysisJune2015.R')
+source('Activity_cleanAllData.R')
+#source('ActivityDrosophila_ComplexCues_EXP2.R')
+#source('ActivityDrosophila_ComplexCues_EXP3.R')
+#source('ActivityDrosophila_MantidCues_Naive.R')
+#source('ActivityDrosophila_SpiderCues_Nieve.R')
+#source('PredationActivityAnalysisJune2015.R')
 ```
 
 
-```{r}
+```{r, include=FALSE, echo=FALSE, warning=FALSE}
+source("Activity_allData_plotsModels.R")
+```
+
+```{r, echo=FALSE, warning=FALSE}
+print(LT_plot2)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+print(Man_plot2)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+print(spi_plot2)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+print(Exp2_plot2)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+print(Exp3_plot2)
 
 ```

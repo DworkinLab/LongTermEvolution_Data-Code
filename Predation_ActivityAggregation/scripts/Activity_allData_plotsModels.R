@@ -22,7 +22,8 @@ LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 600) +
-  geom_vline(xintercept = 8)
+  geom_vline(xintercept = 8) +
+  ggtitle("Long Term Evolved Populations: hourly activity counts")
 print(LT_plot2)
 
 
@@ -34,7 +35,8 @@ Man_plot2 <- Man_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   annotate("rect", fill = "yellow", alpha = 0.2, 
            xmin = 10, xmax = 22,
            ymin = 0, ymax = 100) +
-  geom_vline(xintercept = 14) + geom_vline(xintercept = 11.5)
+  geom_vline(xintercept = 14) + geom_vline(xintercept = 11.5) +
+  ggtitle("Mantid Cues vs Control: hourly activity counts")
 print(Man_plot2)
 
 ## Spider Cues:
@@ -43,7 +45,8 @@ spi_plot <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment)) 
 spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
-               ymin = 0, ymax = 400) + geom_vline(xintercept = 12)
+               ymin = 0, ymax = 400) + geom_vline(xintercept = 12) +
+  ggtitle("Spider Cues vs. Control: hourly activity counts")
 print(spi_plot2)
 
 
@@ -54,7 +57,8 @@ Exp2_plot2 <- Exp2_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="lo
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 400) +
-  geom_vline(xintercept = 12)
+  geom_vline(xintercept = 12) +
+  ggtitle("Complex Cues Experiment 2: hourly activity counts")
 print(Exp2_plot2)
 
 
@@ -65,5 +69,6 @@ Exp3_plot2 <- Exp3_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="lo
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 500) +
-  geom_vline(xintercept = 12)
+  geom_vline(xintercept = 12) +
+  ggtitle("Complex Cues Experiment 3: hourly activity counts")
 print(Exp3_plot2)
