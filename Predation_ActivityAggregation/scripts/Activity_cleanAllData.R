@@ -4,7 +4,16 @@
 
 source("Packages_source_file.R")
 
-# Long Term Evolved Populations:
+#Naming:
+# LT's == DAM / dat
+# ComplexCues2 == Exp2
+# ComplexCues3 == Exp3
+# Mantid Cues == Mantid
+# SpiderCues == No prefix
+
+########## Long Term Evolved Populations:
+
+
 DAM1 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM1_May2015_RD.txt")
 DAM2 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM2_May2015_RD.txt")
 #monitor
@@ -30,7 +39,56 @@ DAM_data2$monitor <- as.factor(DAM_data2$monitor)
 
 head(DAM_data2)
 
-# Complex Cues Exp_2:
+# munge the sample_info to have consistent naming conventions with DAM.
+
+sample_info$vial <- paste("vial", sample_info$Location, sep="")
+colnames(sample_info)[3] <- "day"
+sample_info$day.vial <- interaction(sample_info$day, sample_info$vial) # day is the start day.
+
+# reshape
+
+head(DAM_data2)
+DAM_long <- reshape(DAM_data2, varying=list(8:31), v.names="activity_counts", direction="long")
+head(DAM_long)
+
+# Add the identifier (14400 is the number of time points per day times the number of days)
+DAM_long$vial <- rep(colnames(DAM_data2)[8:31], each=14400)
+
+start_day <- c(19,21,23,26,28) # The starting days of the experiment
+
+# Make the start days match up for the experiments
+DAM_long$start_day <- ifelse( (DAM_long$day %in% start_day), DAM_long$day, (DAM_long$day -1 ))
+
+DAM_long$day.vial <- interaction(DAM_long$start_day, DAM_long$vial)
+
+DAM_long2 <- merge(DAM_long, sample_info, by="day.vial")
+
+head(DAM_long2)
+
+# To get minute
+DAM_long2$minute <- as.numeric(strftime(DAM_long2$datetime, format ="%M"))
+# to get hour
+DAM_long2$hour <- as.numeric(strftime(DAM_long2$datetime, format ="%H"))
+
+
+# To create a variable for each individual
+DAM_long2$individual <- with(DAM_long2, interaction(day.vial, monitor, drop=FALSE))
+nlevels(DAM_long2$individual)
+
+
+dat.hourly <- with(DAM_long2, 
+                   aggregate(activity_counts, FUN=sum, by=list(vial.x, monitor, start_day, hour, Trt, Population)))
+colnames(dat.hourly) <- c("vial.x", "monitor", "start_day", "hour", "Trt", "Population", "Hourly_activity")     
+dat.hourly$individual <- with(dat.hourly, interaction(start_day, vial.x, monitor, drop=FALSE))
+
+dat.hourly$light <- with(dat.hourly, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+
+
+
+
+########## Complex Cues Exp_2:
+
+
 ComExp2_Mon1 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp2_spi_Vs_Cri_M1.txt")
 ComExp2_Mon2 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp2_spi_Vs_Cri_M2.txt")
 
@@ -98,7 +156,10 @@ Exp2_hour <- Complex_2_long %>%
   summarise(activity_counts=sum(Activity_counts))
 
 
-# Complex Cues Exp_3:
+
+
+
+########### Complex Cues Exp_3:
 
 Exp3_Mon1 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp3_Monitor_1.txt")
 Exp3_Mon2 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp3_Monitor_2.txt")
@@ -160,10 +221,7 @@ head(Exp3_Mon2)
 Exp3_Mon1_long <- gather(Exp3_Mon1, Vial, activity_counts, vial1_SF:vial30_C, factor_key = FALSE)
 Exp3_Mon2_long <- gather(Exp3_Mon2, Vial, activity_counts, vial1_F:vial27_SC, factor_key = FALSE)
 
-
-
 ## Split vial and treatment (SF, F, SC, and C (or need to change how this is done...))
-
 
 Exp3_Mon1_long <- Exp3_Mon1_long %>%
   separate(Vial, c("Vial", "Treatment"), "_")
@@ -171,10 +229,104 @@ Exp3_Mon2_long <- Exp3_Mon2_long %>%
   separate(Vial, c("Vial", "Treatment"), "_")
 head(Exp3_Mon1_long)
 
-# Mantid Cues
+#Combine into one data set:
+Exp3_long <- rbind(Exp3_Mon1_long, Exp3_Mon2_long)
+
+Exp3_long$monitor <- as.factor(Exp3_long$monitor)
+Exp3_long$Treatment <- as.factor(Exp3_long$Treatment)
+Exp3_long$day <- as.factor(Exp3_long$day)
+Exp3_long$Vial <- as.factor(Exp3_long$Vial)
 
 
-# Spider Cues
+#By hour:
+
+Exp3_hour <- Exp3_long %>%
+  group_by(Treatment, Vial, monitor, day, hour, hour) %>%
+  summarise(activity_counts=sum(activity_counts))
+
+Exp3_hour$individual <- with(Exp3_hour, interaction(day, Vial, monitor, drop=FALSE))
+
+
+Exp3_hour$hour <- as.numeric(Exp3_hour$hour)
+
+
+################# Mantid Cues
+
+#The Data
+MantidMon1 <- read.table("../data/Activity_Drosophila_MantidCues_May2016/Mantid_Cues_M1.txt")
+MantidMon2 <- read.table("../data/Activity_Drosophila_MantidCues_May2016/Mantid_Cues_M2.txt")
+
+head(MantidMon1)
+head(MantidMon2)
+#Monitor Variable
+MantidMon1$V43 <- 1
+MantidMon2$V43 <- 2
+
+#Light = V10
+#Mon1 pred = V11-V18, con = V35-V42
+#Mon2 con = V11-V18, pred = V25-V42
+
+man_colnames <- c("bin", "date", "time", "signal", "unknown1", "unknown2", "unknown3", "unknown4", "unknown5", "lightON",'vial1', 'vial2', 'vial3', 'vial4', 'vial5', 'vial6', 'vial7', 'vial8', 'vial9', 'vial10', 'vial11', 'vial12', 'vial13', 'vial14', 'vial15', 'vial16', 'vial17', 'vial18', 'vial19', 'vial20', 'vial21', 'vial22', 'vial23', 'vial24', 'vial25', 'vial26', 'vial27', 'vial28', 'vial29', 'vial30', 'vial31', 'vial32', 'monitor')
+
+colnames(MantidMon1) <- man_colnames
+colnames(MantidMon2) <- man_colnames
+  
+#Remove unknowns
+MantidMon1 <- MantidMon1[,-c(5:9)]
+MantidMon2 <- MantidMon2[,-c(5:9)]
+
+#Remove unneeded vials (i.e vials 9 - 24)
+#14 - 29
+MantidMon1 <- MantidMon1[,-c(14:29)]
+MantidMon2 <- MantidMon2[,-c(14:29)]
+
+#Change date-time
+MantidMon1$datetime <- as.POSIXct(paste(MantidMon1$date, MantidMon1$time), format="%m/%d/%y %H:%M:%S")
+MantidMon2$datetime <- as.POSIXct(paste(MantidMon2$date, MantidMon2$time), format="%m/%d/%y %H:%M:%S")
+
+#Reshape to long
+
+MantidMon1_long <- gather(MantidMon1, Vial, Activity_counts, vial1:vial32, factor_key = FALSE)
+MantidMon2_long <- gather(MantidMon2, Vial, Activity_counts, vial1:vial32, factor_key = FALSE)
+
+
+# To get minute
+MantidMon1_long$minute <- as.numeric(strftime(MantidMon1_long$datetime, format ="%M"))
+MantidMon2_long$minute <- as.numeric(strftime(MantidMon2_long$datetime, format ="%M"))
+# to get hour
+MantidMon1_long$hour <- as.numeric(strftime(MantidMon1_long$datetime, format ="%H"))
+MantidMon2_long$hour <- as.numeric(strftime(MantidMon2_long$datetime, format ="%H"))
+# to get day
+MantidMon1_long$day <- as.numeric(strftime(MantidMon1_long$datetime, format = "%d"))
+MantidMon2_long$day <- as.numeric(strftime(MantidMon2_long$datetime, format = "%d"))
+
+#Predator or control
+
+MantidMon1_long$Treatment <- ifelse(MantidMon1_long$Vial == "vial1", "Mantid", ifelse (MantidMon1_long$Vial == "vial2", "Mantid", ifelse(MantidMon1_long$Vial == "vial3", "Mantid", ifelse(MantidMon1_long$Vial == "vial4", "Mantid", ifelse(MantidMon1_long$Vial == "vial5", "Mantid", ifelse(MantidMon1_long$Vial == "vial6", "Mantid", ifelse(MantidMon1_long$Vial == "vial7", "Mantid", ifelse(MantidMon1_long$Vial == "vial8", "Mantid","Control"))))))))
+
+MantidMon2_long$Treatment <- ifelse(MantidMon2_long$Vial == "vial1", "Control", ifelse (MantidMon2_long$Vial == "vial2", "Control", ifelse(MantidMon2_long$Vial == "vial3", "Control", ifelse(MantidMon2_long$Vial == "vial4", "Control", ifelse(MantidMon2_long$Vial == "vial5", "Control", ifelse(MantidMon2_long$Vial == "vial6", "Control", ifelse(MantidMon2_long$Vial == "vial7", "Control", ifelse(MantidMon2_long$Vial == "vial8", "Control","Mantid"))))))))
+
+Mantid_long <- rbind(MantidMon1_long, MantidMon2_long)
+
+head(Mantid_long)
+
+Mantid_long$monitor <- as.factor(Mantid_long$monitor)
+Mantid_long$Treatment <- as.factor(Mantid_long$Treatment)
+Mantid_long$day <- as.factor(Mantid_long$day)
+Mantid_long$Vial <- as.factor(Mantid_long$Vial)
+
+#Hourly activity
+
+Mantid_hour <- Mantid_long %>%
+  group_by(Treatment, Vial, monitor, day, hour) %>%
+  summarise(activity_counts = sum(Activity_counts))
+
+Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop=FALSE))
+
+
+
+
+################# Spider Cues
 
 Mon1 <- read.table("../data/Activity_Drosophila_SpiderCues_May2016/DrosophilaActivity_Spider_cues_Monitor1_May2016.txt")
 Mon2 <- read.table("../data/Activity_Drosophila_SpiderCues_May2016/DrosophilaActivity_Spider_cues_Monitor2_May2016.txt")
@@ -237,4 +389,6 @@ act_hour <- Act_long %>%
   group_by(Treatment, Vial, monitor, day, hour) %>%
   summarise(activity_counts = sum(Activity_counts))
 
-#Have daily activity (day_act) and hourly activity (act_hour)
+
+
+#### For all: have Activity in long format and activity by hour

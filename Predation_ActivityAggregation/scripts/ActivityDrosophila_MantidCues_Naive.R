@@ -12,6 +12,8 @@
 source('Packages_source_file.R')
 
 
+# Hour start: weird based on monitor - Mon1 == 11:31, Mon2== 14:01
+
 
 #The Data
 MantidMon1 <- read.table("../data/Activity_Drosophila_MantidCues_May2016/Mantid_Cues_M1.txt")
