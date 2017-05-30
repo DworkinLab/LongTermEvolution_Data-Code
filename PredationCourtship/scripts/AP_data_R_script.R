@@ -186,6 +186,7 @@ mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
 plot(allEffects(mod_court_plot))
 mod_copl_plot <- lmer(Rel_Cop_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
 plot(allEffects(mod_copl_plot))
+AP_Data$Rel_Cop_dur <- as.numeric(AP_Data$Rel_Cop_dur)
 mod_copd_plot <- lmer(Rel_Cop_dur ~ 1 + Treatment + (1|Date), data = AP_Data)
 plot(allEffects(mod_copd_plot))
 mod_cop_count <- lmer(Copulation ~ 1+ Treatment + (1|Date), data=AP_Data)
@@ -206,3 +207,32 @@ plot(effect("Treatment", mod_copl_plot), main = "Copulation Latency", ylab = "Co
 plot(effect("Treatment", mod_copd_plot), main =  "Copulation Duration", ylab = "Copulation Duration (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 1,nrow = 1,ncol = 2, more=TRUE)
 plot(effect("Treatment", mod_cop_count), main = "Copulation Proportion", ylab = "Copulation ", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 2,nrow = 1,ncol = 2)
 
+
+
+copprop <- effect("Treatment", mod_cop_count)
+copprop <- as.data.frame(copprop)
+copprop
+
+copDur <- effect("Treatment", mod_copd_plot)
+copDur <- as.data.frame(copDur)
+copDur$Behaviour <- "Copulation Duration"
+
+CourLat <- effect("Treatment", mod_court_plot)
+CourLat <- as.data.frame(CourLat)
+CourLat$Behaviour <- "Courtship Latency"
+
+copLat <- effect("Treatment", mod_copl_plot)
+copLat <- as.data.frame(copLat)
+copLat$Behaviour <- "Copulation Latency"
+
+Times <- rbind(copDur, CourLat, copLat)
+head(Times)
+
+
+gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
+gg1 + geom_bar(stat="identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Times (seconds)")
+
+gg2 <- ggplot(copprop, aes(x=Treatment, y=fit))
+gg2 + geom_bar(stat="identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Proportion")
