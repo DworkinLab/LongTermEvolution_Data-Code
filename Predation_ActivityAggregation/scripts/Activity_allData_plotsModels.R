@@ -18,14 +18,20 @@ head(act_hour) ## SpiderCues
 ### Plots:
 
 ## Evolved Populations
+dat.hourly_2 <- dat.hourly
+head(dat.hourly_2)
+dat.hourly_2 <- within(dat.hourly_2, { 
+  Predation = ifelse (Trt == "C", "Control", ifelse(Trt == "S", "Spider", "Mantids"))})
 
-LT_plot <- ggplot(dat.hourly, aes(x=hour, y= Hourly_activity, colour=Trt)) + xlim(0,24) + ylim(0,600)
+LT_plot <- ggplot(dat.hourly_2, aes(x=hour, y= Hourly_activity, colour=Predation)) + xlim(0,24) + ylim(0,600)
 LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 600) +
   geom_vline(xintercept = 8) +
-  ggtitle("Long Term Evolved Populations: hourly activity counts")
+  ggtitle("Long Term Evolved Populations: hourly activity counts") + 
+  ylab("Hourly Activity") +
+  xlab("Hour")
 print(LT_plot2)
 
 #models
@@ -70,7 +76,9 @@ spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loes
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 400) + geom_vline(xintercept = 12) +
-  ggtitle("Spider Cues vs. Control: hourly activity counts")
+  ggtitle("Spider Cues vs. Control: hourly activity counts") + 
+  ylab("Hourly Activity") +
+  xlab("Hour")
 print(spi_plot2)
 
 
