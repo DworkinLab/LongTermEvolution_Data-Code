@@ -228,8 +228,12 @@ copLat$Behaviour <- "Copulation Latency"
 Times <- rbind(copDur, CourLat, copLat)
 head(Times)
 
+head(Times)
+Times <- within(Times, { 
+  Predation = ifelse (Treatment == "LTC", "Control", ifelse(Treatment == "LTS", "Spider", "Mantids"))})
+head(Times)
 
-gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
+gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Predation))
 gg1 + geom_bar(stat="identity", position = position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Times (seconds)")
 
