@@ -1,5 +1,5 @@
 ---
-title: "Activity data together"
+title: "Influence of Predators on Drosophila Activity"
 
 ---
 
@@ -39,6 +39,7 @@ print(LT_plot2)
 ```{r, include=FALSE, echo=FALSE, warning=FALSE}
 #head(dat.hourly_2)
 
+#Need day effect: start day == many different days
 ```
 
 Model:
@@ -78,7 +79,8 @@ summary(gls.mod.2)
 
 What are we trying to achieve? We want to fit a model that looks something like this
 
-``` new.model <- glmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  **f(hour)** + monitor + start_day 
+``` 
+new.model <- glmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  **f(hour)** + monitor + start_day 
     + (1 + **f(hour)** + light | individual),
     correlation = corAR1(form =~hour|individual)) 
     # Do we still need this for residual variance?).
@@ -89,11 +91,10 @@ The question is, what is the functional form of *f()`?
 ### Mantid Cues
 ```{r, echo=FALSE, warning=FALSE}
 print(Man_plot2)
-
 ```
 
 ```{r}
-man.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Mantid_hour)
+man.mod <- lm(activity_counts ~ Treatment + hour + monitor,data=Mantid_hour)
 
 
 
@@ -103,7 +104,7 @@ summary(man.mod)
 
 
 ```{r}
-man_mod_2 <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=Mantid_hour)
+man_mod_2 <- gls(activity_counts ~ Treatment + hour + monitor, correlation = corAR1(form = ~ 1|hour), data=Mantid_hour)
 
 anova(man_mod_2)
 summary(man_mod_2)
@@ -112,7 +113,7 @@ summary(man_mod_2)
 
 
 ```{r}
-man_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Mantid_hour)
+man_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Mantid_hour)
 
 
 summary(man_mod_3)
@@ -132,7 +133,7 @@ print(spi_plot2)
 Model:
 
 ```{r}
-hour.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=act_hour)
+hour.mod <- lm(activity_counts ~ Treatment + hour + monitor,data=act_hour)
 
 
 
@@ -142,7 +143,7 @@ summary(hour.mod)
 
 
 ```{r}
-correl_mod <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=act_hour)
+correl_mod <- gls(activity_counts ~ Treatment + hour + monitor, correlation = corAR1(form = ~ 1|hour), data=act_hour)
 
 anova(correl_mod)
 summary(correl_mod)
@@ -151,7 +152,7 @@ summary(correl_mod)
 
 
 ```{r}
-act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
+act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
 
 
 summary(act_cor_light_mod)
@@ -169,7 +170,7 @@ print(Exp2_plot2)
 
 
 ```{r}
-Exp2_mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Exp2_hour)
+Exp2_mod <- lm(activity_counts ~ Treatment + hour + monitor,data=Exp2_hour)
 
 
 
@@ -179,7 +180,7 @@ summary(Exp2_mod)
 
 
 ```{r}
-Exp2_mod_2 <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=Exp2_hour)
+Exp2_mod_2 <- gls(activity_counts ~ Treatment + hour + monitor, correlation = corAR1(form = ~ 1|hour), data=Exp2_hour)
 
 anova(Exp2_mod_2)
 summary(Exp2_mod_2)
@@ -188,7 +189,7 @@ summary(Exp2_mod_2)
 
 
 ```{r}
-Exp2_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp2_hour)
+Exp2_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp2_hour)
 
 
 summary(Exp2_mod_3)
@@ -206,7 +207,7 @@ print(Exp3_plot2)
 ```
 
 ```{r}
-exp3.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Exp3_hour)
+exp3.mod <- lm(activity_counts ~ Treatment + hour + monitor,data=Exp3_hour)
 
 
 
@@ -216,7 +217,7 @@ summary(exp3.mod)
 
 
 ```{r}
-exp3.mod_2 <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=Exp3_hour)
+exp3.mod_2 <- gls(activity_counts ~ Treatment + hour + monitor, correlation = corAR1(form = ~ 1|hour), data=Exp3_hour)
 
 anova(exp3.mod_2)
 summary(exp3.mod_2)
@@ -225,7 +226,7 @@ summary(exp3.mod_2)
 
 
 ```{r}
-exp3.mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp3_hour)
+exp3.mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp3_hour)
 
 
 summary(exp3.mod_3)
