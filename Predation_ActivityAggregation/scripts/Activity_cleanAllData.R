@@ -156,7 +156,7 @@ Exp2_hour <- Complex_2_long %>%
   summarise(activity_counts=sum(Activity_counts))
 
 
-
+Exp2_hour$light <- with(Exp2_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 
 ########### Complex Cues Exp_3:
@@ -248,7 +248,7 @@ Exp3_hour$individual <- with(Exp3_hour, interaction(day, Vial, monitor, drop=FAL
 
 
 Exp3_hour$hour <- as.numeric(Exp3_hour$hour)
-
+Exp3_hour$light <- with(Exp3_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 ################# Mantid Cues
 
@@ -322,6 +322,7 @@ Mantid_hour <- Mantid_long %>%
   summarise(activity_counts = sum(Activity_counts))
 
 Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop=FALSE))
+
 Mantid_hour$light <- with(Mantid_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 
