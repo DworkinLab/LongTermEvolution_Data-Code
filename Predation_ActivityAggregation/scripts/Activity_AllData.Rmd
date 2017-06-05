@@ -87,6 +87,14 @@ new.model <- glmer(Hourly_activity ~ Predation + Predation:Population + light + 
 
 The question is, what is the functional form of *f()`?
 
+
+
+Data Lunch Notes:
+
+
+
+
+
 ### Mantid Cues
 ```{r, echo=FALSE, warning=FALSE}
 print(Man_plot2)

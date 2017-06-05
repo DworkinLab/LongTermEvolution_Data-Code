@@ -53,6 +53,17 @@ gls.mod.2 <- gls(Hourly_activity ~ Trt + Trt:Population + light + light:Trt +  h
 summary(gls.mod.2)
 #confint(gls.mod.2)
 
+### New model by Ian:
+require(stats)
+require(graphics)
+require(splines)
+mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  bs(hour, 5) + monitor + start_day + (1 + bs(hour, 5) + light | individual), data=dat.hourly_2)
+
+summary(mod_trial_1)
+
+
+
+
 
 
 ## Mantid Cues
@@ -76,7 +87,7 @@ spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loes
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 400) + geom_vline(xintercept = 12) +
-  ggtitle("Spider Cues vs. Control: hourly activity counts") + 
+  #ggtitle("Spider Cues vs. Control: hourly activity counts") + 
   ylab("Hourly Activity") +
   xlab("Hour")
 print(spi_plot2)
