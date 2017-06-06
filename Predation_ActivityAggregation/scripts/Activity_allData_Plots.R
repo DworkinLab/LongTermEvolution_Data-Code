@@ -29,7 +29,7 @@ LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 600) +
   geom_vline(xintercept = 8) +
-  ggtitle("Long Term Evolved Populations: hourly activity counts") + 
+  #ggtitle("Long Term Evolved Populations: hourly activity counts") + 
   ylab("Hourly Activity") +
   xlab("Hour")
 print(LT_plot2)
