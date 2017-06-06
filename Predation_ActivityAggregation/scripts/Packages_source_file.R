@@ -9,8 +9,9 @@
 #install.packages("effects")
 #install.packages("rio")
 #install.packages('car')
-
-
+library(stats)
+library(graphics)
+library(splines)
 library(rio)
 library(lme4)
 library(nlme)

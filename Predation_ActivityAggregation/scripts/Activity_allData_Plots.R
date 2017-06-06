@@ -34,38 +34,6 @@ LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   xlab("Hour")
 print(LT_plot2)
 
-#models
-hour.mod <- lm(Hourly_activity ~ Trt + Trt:Population + hour + monitor + start_day,data=dat.hourly)
-summary(hour.mod)
-#pacf(resid(hour.mod))
-
-# Accounting for the auto-correlation
-gls.mod <- gls(Hourly_activity ~ Trt + Trt:Population + hour + monitor + start_day,
-               correlation = corAR1(form =~hour|individual),
-               data=dat.hourly)
-anova(gls.mod)
-summary(gls.mod)
-#acf(resid(gls.mod))
-
-gls.mod.2 <- gls(Hourly_activity ~ Trt + Trt:Population + light + light:Trt +  hour + monitor + start_day,
-                 correlation = corAR1(form =~hour|individual),
-                 data=dat.hourly)
-summary(gls.mod.2)
-#confint(gls.mod.2)
-
-### New model by Ian:
-require(stats)
-require(graphics)
-require(splines)
-mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  bs(hour, 5) + monitor + start_day + (1 + bs(hour, 5) + light | individual), data=dat.hourly_2)
-
-summary(mod_trial_1)
-
-
-
-
-
-
 ## Mantid Cues
 
 #Initiation at two times?
@@ -93,25 +61,8 @@ spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loes
 print(spi_plot2)
 
 
-#models:
-
-hour.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=act_hour)
-summary(hour.mod)
-pacf(resid(hour.mod))
 
 
-correl_mod <- gls(activity_counts ~ Treatment + hour + monitor + day, correlation = corAR1(form = ~ 1|hour), data=act_hour)
-anova(correl_mod)
-summary(correl_mod)
-acf(resid(correl_mod))
-
-#With light
-act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor + day, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
-summary(act_cor_light_mod)
-confint(act_cor_light_mod)
-acf(resid(act_cor_light_mod))
-
-#Days seem weird
 ## Complex Cues 2:
 
 Exp2_plot <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,25) + ylim(0,400)
@@ -134,11 +85,3 @@ Exp3_plot2 <- Exp3_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="lo
   geom_vline(xintercept = 12) +
   ggtitle("Complex Cues Experiment 3: hourly activity counts")
 print(Exp3_plot2)
-
-
-#model
-exp3.mod <- lm(activity_counts ~ Treatment + hour + monitor + day,data=Exp3_hour)
-summary(exp3.mod)
-pacf(resid(exp3.mod))
-
-
