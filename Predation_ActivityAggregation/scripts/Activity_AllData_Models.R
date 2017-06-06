@@ -1,10 +1,7 @@
 #Models:
 
 ## Evolved Popualtion Models
-
 hour.mod <- lm(Hourly_activity ~ Predation + Predation:Population + hour + monitor + start_day,data=dat.hourly_2)
-
-
 summary(hour.mod)
 pacf(resid(hour.mod))
 

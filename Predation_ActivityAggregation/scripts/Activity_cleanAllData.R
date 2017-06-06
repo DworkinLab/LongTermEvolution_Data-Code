@@ -155,6 +155,7 @@ Exp2_hour <- Complex_2_long %>%
   group_by(Treatment, Vial, monitor, day, hour, hour) %>%
   summarise(activity_counts=sum(Activity_counts))
 
+Exp2_hour$individual <- with(Exp2_hour, interaction(Vial, monitor, drop=FALSE))
 
 Exp2_hour$light <- with(Exp2_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
@@ -244,7 +245,7 @@ Exp3_hour <- Exp3_long %>%
   group_by(Treatment, Vial, monitor, day, hour, hour) %>%
   summarise(activity_counts=sum(activity_counts))
 
-Exp3_hour$individual <- with(Exp3_hour, interaction(day, Vial, monitor, drop=FALSE))
+Exp3_hour$individual <- with(Exp3_hour, interaction(Vial, monitor, drop=FALSE))
 
 
 Exp3_hour$hour <- as.numeric(Exp3_hour$hour)
@@ -321,7 +322,7 @@ Mantid_hour <- Mantid_long %>%
   group_by(Treatment, Vial, monitor, day, hour) %>%
   summarise(activity_counts = sum(Activity_counts))
 
-Mantid_hour$individual <- with(Mantid_hour, interaction(day, Vial, monitor, drop=FALSE))
+Mantid_hour$individual <- with(Mantid_hour, interaction(Vial, monitor, drop=FALSE))
 
 Mantid_hour$light <- with(Mantid_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
@@ -389,7 +390,9 @@ act_hour <- Act_long %>%
   group_by(Treatment, Vial, monitor, day, hour) %>%
   summarise(activity_counts = sum(Activity_counts))
 
-act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+act_hour$individual <- with(act_hour, interaction(Vial, monitor, drop=FALSE))
 
+
+act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 #### For all: have Activity in long format and activity by hour

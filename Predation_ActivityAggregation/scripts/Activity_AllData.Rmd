@@ -49,10 +49,13 @@ The question is, what is the functional form of *f()`?
 
 
 New model After data Lunch:
+
+-- bs or ns both work
+
+-- Ian ran with 3,4,5 (+++ knots), recomended to go with 4 (all were quite similar)
+
 ```{r}
-require(stats)
-require(graphics)
-require(splines)
+
 mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  bs(hour, 5) + monitor + start_day + (1 + bs(hour, 5) + light | individual), data=dat.hourly_2)
 
 summary(mod_trial_1)
@@ -71,14 +74,14 @@ print(Man_plot2)
 
 
 ```{r}
-man_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Mantid_hour)
+man_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  bs(hour, 4) + monitor + (1 + bs(hour, 4) + light | individual), data=Mantid_hour)
 
+summary(man_mod_spli)
+anova(man_mod_spli)
+pacf(resid(man_mod_spli))
+car::Anova(man_mod_spli)
 
-summary(man_mod_3)
-#confint(man_mod_3)
-#acf(resid(man_mod_3))
 ```
-
 
 
 
@@ -92,12 +95,12 @@ Model:
 
 
 ```{r}
-act_cor_light_mod <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=act_hour)
+spi_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  bs(hour, 3) + monitor + (1 + bs(hour, 3) + light | individual), data=act_hour)
 
-
-summary(act_cor_light_mod)
-#confint(act_cor_light_mod)
-#acf(resid(act_cor_light_mod))
+summary(spi_mod_spli)
+anova(spi_mod_spli)
+pacf(resid(spi_mod_spli))
+car::Anova(spi_mod_spli)
 ```
 
 
@@ -111,16 +114,14 @@ print(Exp2_plot2)
 
 
 ```{r}
-Exp2_mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp2_hour)
+Exp2_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  bs(hour, 3) + monitor + (1 + bs(hour, 3) + light | individual), data=Exp2_hour)
 
+summary(Exp2_mod_spli)
+anova(Exp2_mod_spli)
+pacf(resid(Exp2_mod_spli))
+car::Anova(Exp2_mod_spli)
 
-summary(Exp2_mod_3)
-#confint(Exp2_mod_3)
-#acf(resid(Exp2_mod_3))
 ```
-
-
-
 
 ### Complex Cues: Experiment 3: Crickets, Flies, Spiders fed crickets and spiders fed flies
 
@@ -129,11 +130,11 @@ print(Exp3_plot2)
 ```
 
 ```{r}
-exp3.mod_3 <- gls(activity_counts ~ Treatment + light + light:Treatment +  hour + monitor, correlation = corAR1(form =~1|hour), control = list(singular.ok = TRUE), data=Exp3_hour)
+Exp3_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  bs(hour, 3) + monitor + (1 + bs(hour, 3) + light | individual), data=Exp3_hour)
 
-
-summary(exp3.mod_3)
-#confint(exp3.mod_3)
-#acf(resid(exp3.mod_3))
+summary(Exp3_mod_spli)
+anova(Exp3_mod_spli)
+pacf(resid(Exp3_mod_spli))
+car::Anova(Exp3_mod_spli)
 ```
 
