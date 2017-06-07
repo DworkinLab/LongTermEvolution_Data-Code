@@ -1,4 +1,10 @@
 #Models:
+#### old models here at top; new models at bottom (with ns/bs)
+
+source('Packages_source_file.R')
+source('Activity_cleanAllData.R')
+source("Activity_allData_Plots.R")
+
 
 ## Evolved Popualtion Models
 hour.mod <- lm(Hourly_activity ~ Predation + Predation:Population + hour + monitor + start_day,data=dat.hourly_2)
@@ -115,4 +121,114 @@ summary(exp3.mod_3)
 #confint(exp3.mod_3)
 #acf(resid(exp3.mod_3))
 
+
+#################################################################
+### Running the new models (ns/bs knots)
+
+#evovled pop
+
+print(LT_plot2)
+
+mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  bs(hour, 4) + monitor + start_day + (1 + bs(hour, 4) + light | individual), data=dat.hourly_2)
+
+summary(mod_trial_1)
+anova(mod_trial_1)
+pacf(resid(mod_trial_1))
+car::Anova(mod_trial_1)
+
+
+
+
+
+### Mantid Cues
+
+print(Man_plot2)
+
+#man_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  bs(hour, 4) + monitor + (1 + bs(hour, 4) + light | individual), data=Mantid_hour)
+
+#summary(man_mod_spli)
+#pacf(resid(man_mod_spli))
+#car::Anova(man_mod_spli)
+
+man_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  ns(hour, 4) + monitor + (1 + light | individual), data=Mantid_hour)
+
+summary(man_mod_spli)
+pacf(resid(man_mod_spli))
+car::Anova(man_mod_spli)
+
+
+man_mod_spli_2 <- lmer(activity_counts ~ monitor + sin(pi*hour/12) + cos(pi*hour/12) + Treatment*light + (1 + light | individual), data=Mantid_hour)
+
+summary(man_mod_spli_2)
+pacf(resid(man_mod_spli_2))
+car::Anova(man_mod_spli_2)
+
+
+
+### Spider Cues
+
+print(spi_plot2)
+
+spi_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  ns(hour, 5) + monitor + (1  + light | individual), data=act_hour)
+
+
+spi_mod_spli_2 <- lmer(activity_counts ~ Treatment + light + light:Treatment +  sin(pi*hour/12) + cos(pi*hour/12) + monitor + (1 + sin(pi*hour/12) + cos(pi*hour/12) + light | individual), data=act_hour)
+
+summary(spi_mod_spli)
+summary(spi_mod_spli_2)
+pacf(resid(spi_mod_spli))
+car::Anova(spi_mod_spli)
+car::Anova(spi_mod_spli_2)
+
+
+### Complex Cues: Experiment 2 (Crickets vs. Spiders)
+
+print(Exp2_plot2)
+
+Exp2_mod_spli <- lmer(activity_counts ~ Treatment + light + light:Treatment +  ns(hour, 4) + monitor + (1 + light | individual), data=Exp2_hour)
+
+summary(Exp2_mod_spli)
+pacf(resid(Exp2_mod_spli))
+car::Anova(Exp2_mod_spli)
+
+
+Exp2_mod_spli_2 <- lmer(activity_counts ~ monitor + sin(pi*hour/12) + cos(pi*hour/12) + Treatment*light + (1 + light | individual), data=Exp2_hour)
+
+summary(Exp2_mod_spli_2)
+pacf(resid(Exp2_mod_spli_2))
+car::Anova(Exp2_mod_spli_2)
+
+
+### Complex Cues: Experiment 3: Crickets, Flies, Spiders fed crickets and spiders fed flies
+
+print(Exp3_plot2)
+
+Exp3_mod_spli <- lmer(activity_counts ~ ns(hour, 3) + monitor + Treatment*light + (1 + light | individual), 
+                      data=Exp3_hour)
+
+summary(Exp3_mod_spli)
+pacf(resid(Exp3_mod_spli))
+car::Anova(Exp3_mod_spli)
+
+Exp3_mod_spli_2 <- lmer(activity_counts ~ monitor + sin(pi*hour/12) + cos(pi*hour/12) + Treatment*light 
+                        + (1 + light | individual), data=Exp3_hour)
+
+summary(Exp3_mod_spli_2)
+pacf(resid(Exp3_mod_spli_2))
+car::Anova(Exp3_mod_spli_2)
+
+
+#install.packages("lsmeans")
+#library(lsmeans)
+#install.packages("lmerTest")
+#library(lmerTest)
+
+lsmeans(Exp3_mod_spli_2)
+lsmeans(Exp3_mod_spli_2, specs = c("Treatment", "light"))
+lsmeans(Exp3_mod_spli, specs = c("Treatment", "light"))
+#install.packages("lmerTest")
+library(lmerTest)
+lsmeans(Exp3_mod_spli, specs = c("Treatment", "light"))
+lsmeansLT(Exp3_mod_spli, specs = c("Treatment", "light"))
+lsmeansLT(Exp3_mod_spli, specs = c("Treatment", "light"))
 
