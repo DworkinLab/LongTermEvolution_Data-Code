@@ -238,8 +238,10 @@ gg1 + geom_bar(stat="identity", position = position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + 
   ylab("Times (seconds)")  +
   xlab("") +
-  theme(text = element_text(size=15), axis.text.x=element_text(size=15))
+  theme(text = element_text(size=15), axis.text.x=element_text(size=15)) + scale_fill_manual(values=c("#999999", "#56B4E9", "#E69F00"))
+
+
 
 gg2 <- ggplot(copprop, aes(x=Treatment, y=fit))
 gg2 + geom_bar(stat="identity", position = position_dodge()) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Proportion")
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Proportion") 

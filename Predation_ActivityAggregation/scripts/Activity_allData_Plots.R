@@ -85,3 +85,11 @@ Exp3_plot2 <- Exp3_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="lo
   geom_vline(xintercept = 12) +
   ggtitle("Complex Cues Experiment 3: hourly activity counts")
 print(Exp3_plot2)
+
+
+
+
+#ABS
+LT_plot2 + scale_colour_manual(values=c("#999999",  "#56B4E9", "#E69F00"))
+
+spi_plot2 + scale_color_manual(values=c("#999999",  "#E69F00"))
