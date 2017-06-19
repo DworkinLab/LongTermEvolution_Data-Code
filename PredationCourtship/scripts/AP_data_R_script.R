@@ -245,3 +245,46 @@ gg1 + geom_bar(stat="identity", position = position_dodge()) +
 gg2 <- ggplot(copprop, aes(x=Treatment, y=fit))
 gg2 + geom_bar(stat="identity", position = position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Proportion") 
+
+
+
+
+
+#####
+head(AP_Data)
+
+AP_age <-AP_Data %>%
+  group_by(Treatment.Rep, AgeBin) %>%
+  summarise(copulation_prop=sum(Copulation/(n())), mean_court_lat= mean(Rel_Court_lat, na.rm = TRUE), mean_cop_lat = mean(Rel_Cop_lat, na.rm=TRUE), mean_cop_dur = mean(Rel_Cop_dur, na.rm=TRUE), cop_sum=sum(Copulation))
+
+
+AP_Data$Treatment.Rep <- as.factor(AP_Data$Treatment.Rep)
+AP_Data$AgeBin <- as.factor(AP_Data$AgeBin)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment.Rep + AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+summary(mod_court)
+car::Anova(mod_court)
+plot(allEffects(mod_court))
+
+mod_court_plot <- lmer(Rel_Court_lat ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+plot(allEffects(mod_court_plot))
+mod_copl_plot <- lmer(Rel_Cop_lat ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+plot(allEffects(mod_copl_plot))
+AP_Data$Rel_Cop_dur <- as.numeric(AP_Data$Rel_Cop_dur)
+mod_copd_plot <- lmer(Rel_Cop_dur ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+plot(allEffects(mod_copd_plot))
+
+
+mod_cop_count <- lmer(Copulation ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+plot(allEffects(mod_cop_count))
+head(AP_Data)
+
+
+p10 <- ggplot(AP_Data, aes(x = Treatment.Rep, y = Rel_Court_lat, colour = AgeBin))
+p11 <- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_lat, colour=AgeBin))
+p12<- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_dur, colour = AgeBin))
+
+p10+geom_boxplot()
+p11+geom_boxplot()
+p12+geom_boxplot()
+
+
