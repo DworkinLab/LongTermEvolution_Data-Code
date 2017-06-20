@@ -71,6 +71,7 @@ AP_evolved_data$CopulationLatency <- as.difftime(as.character(AP_evolved_data$Co
 AP_evolved_data$CopulationDuration <- as.difftime(as.character(AP_evolved_data$CopulationDuration), format = "%H:%M", units = "secs")
 
 head(AP_evolved_data)
+
 #Needs to be based on the age bin start time!
 AP_evolved_data$CourtshipLatency <- with(AP_evolved_data, CourtshipLatency - StartTime)
 
@@ -250,7 +251,7 @@ gg2 + geom_bar(stat="identity", position = position_dodge()) +
 
 
 
-#####
+##### Adding age as a factor:
 head(AP_Data)
 
 AP_age <-AP_Data %>%
@@ -260,31 +261,69 @@ AP_age <-AP_Data %>%
 
 AP_Data$Treatment.Rep <- as.factor(AP_Data$Treatment.Rep)
 AP_Data$AgeBin <- as.factor(AP_Data$AgeBin)
-mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment.Rep + AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
 summary(mod_court)
 car::Anova(mod_court)
 plot(allEffects(mod_court))
 
-mod_court_plot <- lmer(Rel_Court_lat ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
-plot(allEffects(mod_court_plot))
-mod_copl_plot <- lmer(Rel_Cop_lat ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+courtLat <- effect("Treatment*AgeBin", mod_court)
+courtLat <- as.data.frame(courtLat)
+latenCourt <- ggplot(courtLat, aes(y=fit, x=AgeBin, colour=Treatment))
+latenCourt2 <- latenCourt + geom_point(stat="identity", position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), position = position_dodge(0.5)) + 
+  labs(y="Intercept", x="Age Bins") +
+  ggtitle("Courtship Latency") + 
+  scale_colour_manual(values=c("#999999", "#56B4E9", "#E69F00"))
+latenCourt2
+
+#mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+#plot(allEffects(mod_court_plot))
+#summary(mod_court_plot)
+
+mod_copl_plot <- lmer(Rel_Cop_lat ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
 plot(allEffects(mod_copl_plot))
+summary(mod_copl_plot)
+
+copLate <- effect("Treatment*AgeBin", mod_copl_plot)
+copLate <- as.data.frame(copLate)
+LatenCop <- ggplot(copLate, aes(y=fit, x=AgeBin, colour=Treatment))
+LatenCop2 <-  LatenCop + geom_point(stat="identity", position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), position = position_dodge(0.5)) + 
+  labs(y="Intercept", x="Age Bins") +
+  ggtitle("Copulation Latency") + 
+  scale_colour_manual(values=c("#999999", "#56B4E9", "#E69F00"))
+LatenCop2
+
 AP_Data$Rel_Cop_dur <- as.numeric(AP_Data$Rel_Cop_dur)
-mod_copd_plot <- lmer(Rel_Cop_dur ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
+mod_copd_plot <- lmer(Rel_Cop_dur ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
 plot(allEffects(mod_copd_plot))
+summary(mod_copd_plot)
 
+copdur_plot <- effect("Treatment*AgeBin", mod_copd_plot)
+copdur_plot <- as.data.frame(copdur_plot)
+DuratCop <- ggplot(copdur_plot, aes(y=fit, x=AgeBin, colour=Treatment))
+DuratCop2 <- DuratCop + geom_point(stat="identity", position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), position = position_dodge(0.5)) + 
+  labs(y="Intercept", x="Age Bins") +
+  ggtitle("Copulation Duration") + 
+  scale_colour_manual(values=c("#999999", "#56B4E9", "#E69F00"))
+DuratCop2
 
-mod_cop_count <- lmer(Copulation ~ 1+ Treatment*AgeBin + (1|Date), data = AP_Data)
-plot(allEffects(mod_cop_count))
 head(AP_Data)
+mod_cop_count <- lmer(Copulation ~ 0 + Temperature + Humidity + Treatment*AgeBin + (1|Date), data = AP_Data)
+plot(allEffects(mod_cop_count))
+summary(mod_cop_count)
+
+cop_prop_plot <- effect("Treatment*AgeBin", mod_cop_count)
+cop_prop_plot <- as.data.frame(cop_prop_plot)
+propCop <- ggplot(cop_prop_plot, aes(y=fit, x=AgeBin, colour=Treatment))
+propCop2 <- propCop + geom_point(stat="identity", position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), position = position_dodge(0.5)) + 
+  labs(y="Intercept", x="Age Bins") +
+  ggtitle("Copulation Proportion") + 
+  scale_colour_manual(values=c("#999999", "#56B4E9", "#E69F00"))
+propCop2
 
 
-p10 <- ggplot(AP_Data, aes(x = Treatment.Rep, y = Rel_Court_lat, colour = AgeBin))
-p11 <- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_lat, colour=AgeBin))
-p12<- ggplot(AP_Data, aes(x=Treatment.Rep, y = Rel_Cop_dur, colour = AgeBin))
-
-p10+geom_boxplot()
-p11+geom_boxplot()
-p12+geom_boxplot()
-
+multiplot(latenCourt2, LatenCop2, DuratCop2, propCop2, cols=2)
 
