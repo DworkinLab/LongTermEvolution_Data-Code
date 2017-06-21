@@ -175,7 +175,7 @@ with(pred_cor2, cor(activity_counts[Predator== "Spider"],activity_counts[Predato
 
 line2 <- lm(pred_cor2$activity_counts[pred_cor2$Predator == "Spider"] ~ pred_cor2$activity_counts[pred_cor2$Predator == "LTS"])
 
-with(pred_cor2, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS"],abline(line2), main = "Spider:LTS Correlation of activity at different hours",  xlab= "Spider Activity", ylab="Fly Activity" ) )
+with(pred_cor2, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS"],abline(line2), main = "Spider: Correlation of activity at different hours",  xlab= "Spider Activity", ylab="Fly Activity" ) )
 
 
 #Mantids
@@ -186,3 +186,50 @@ line3 <- lm(pred_cor2$activity_counts[pred_cor2$Predator == "Mantid"] ~ pred_cor
 with(pred_cor2, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP"], abline(line3), main = "Mantid:LTP Correlation activity at differnt hours", xlab= "Mantid Activity", ylab="Fly Activity" ) )
 
 
+
+pred_cor3 <- pred_cor %>%
+  group_by(Predator, hour, Population) %>%
+  summarise(activity_counts = mean(activity_counts))
+head(pred_cor3)
+
+#Mantids Population Correlations
+par(mfrow=c(2,2))
+
+line_LTP1 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Mantid"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTP" & pred_cor3$Population == 1])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP" & Population == 1],  abline(line_LTP1), main = "Mantid:LTP Rep1", xlab= "Mantid Activity", ylab="Fly Activity" ) )
+
+line_LTP2 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Mantid"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTP" & pred_cor3$Population == 2])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP" & Population == 2],  abline(line_LTP2), main = "Mantid:LTP Rep2", xlab= "Mantid Activity", ylab="Fly Activity" ) )
+
+line_LTP3 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Mantid"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTP" & pred_cor3$Population == 3])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP" & Population == 3],  abline(line_LTP3), main = "Mantid:LTP Rep3", xlab= "Mantid Activity", ylab="Fly Activity" ) )
+
+line_LTP4 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Mantid"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTP" & pred_cor3$Population == 4])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP" & Population == 4],  abline(line_LTP4), main = "Mantid:LTP Rep4", xlab= "Mantid Activity", ylab="Fly Activity" ) )
+
+par(mfrow=c(1,1))
+
+#Spiders
+par(mfrow=c(2,2))
+
+line_LTS1 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Spider"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTS" & pred_cor3$Population == 1])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS" & Population == 1],  abline(line_LTS1), main = "Spider:LTS Rep1", xlab= "Spider Activity", ylab="Fly Activity" ) )
+
+line_LTS2 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Spider"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTS" & pred_cor3$Population == 2])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS" & Population == 2],  abline(line_LTS2), main = "Spider:LTS Rep2", xlab= "Spider Activity", ylab="Fly Activity" ) )
+
+line_LTS3 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Spider"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTS" & pred_cor3$Population == 3])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS" & Population == 3],  abline(line_LTS3), main = "Spider:LTS Rep3", xlab= "Spider Activity", ylab="Fly Activity" ) )
+
+line_LTS4 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Spider"] ~ pred_cor3$activity_counts[pred_cor3$Predator == "LTS" & pred_cor3$Population == 4])
+
+with(pred_cor3, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS" & Population == 4],  abline(line_LTS4), main = "Spider:LTS Rep4", xlab= "Spider Activity", ylab="Fly Activity" ) )
+
+par(mfrow=c(1,1))
