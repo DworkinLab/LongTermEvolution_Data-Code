@@ -106,7 +106,7 @@ pred_allDATA <- rbind(dat_play, daaaa)
 head(pred_allDATA)
 
 
-all_plots <- ggplot(pred_allDATA, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,500)
+all_plots <- ggplot(pred_allDATA, aes(x=hour, y= activity_counts, colour=Predator)) #+ xlim(0,24) + ylim(0,500)
 all_plots2 <- all_plots + geom_jitter(size=0.5) + geom_smooth(method = "loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
            xmin = 10, xmax = 22,
