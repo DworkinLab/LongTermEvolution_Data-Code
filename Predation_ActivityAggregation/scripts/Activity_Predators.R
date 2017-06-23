@@ -171,12 +171,15 @@ pred_cor2 <- pred_cor %>%
 head(pred_cor2)
 
 #Spiders
+par(mfrow=c(1,2))
 with(pred_cor2, cor(activity_counts[Predator== "Spider"],activity_counts[Predator == "LTS"]))
 
 line2 <- lm(pred_cor2$activity_counts[pred_cor2$Predator == "Spider"] ~ pred_cor2$activity_counts[pred_cor2$Predator == "LTS"])
 
 with(pred_cor2, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS"],abline(line2), main = "Spider: Correlation of activity at different hours",  xlab= "Spider Activity", ylab="Fly Activity" ) )
 
+library(Hmisc)
+with(pred_cor2, rcorr(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS"]))
 
 #Mantids
 with(pred_cor2, cor(activity_counts[Predator== "Mantid"],activity_counts[Predator == "LTP"] ))
@@ -185,7 +188,9 @@ line3 <- lm(pred_cor2$activity_counts[pred_cor2$Predator == "Mantid"] ~ pred_cor
 
 with(pred_cor2, plot(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP"], abline(line3), main = "Mantid:LTP Correlation activity at differnt hours", xlab= "Mantid Activity", ylab="Fly Activity" ) )
 
+with(pred_cor2, rcorr(x = activity_counts[Predator == "Mantid"],y = activity_counts[Predator == "LTP"]))
 
+par(mfrow=c(1,1))
 
 pred_cor3 <- pred_cor %>%
   group_by(Predator, hour, Population) %>%
