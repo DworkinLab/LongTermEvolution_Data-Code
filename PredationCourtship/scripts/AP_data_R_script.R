@@ -5,8 +5,8 @@ library(dplyr)
 library(tidyr)
 library(lme4)
 library(effects)
-#library(lme4)
-#library(car)
+library(car)
+library(glmmTMB)
 
 
 #Multiplots: to join plots together
@@ -153,13 +153,13 @@ p8 <- ggplot(AP_Data, aes(x=Treatment, y = Rel_Cop_dur))
 p9 <- ggplot(AP_Data, aes(x=Treatment, y = Copulation), ylab("Copulation"))
 
 #Units are millisecond (1sec = 1000 milliseconds ((something not right)))
-aaa <- p6+geom_boxplot() +
+aaa <- p6 + geom_boxplot() +
   ylab("Courtship Latency (sec)")
-bbb <- p7+geom_boxplot() +
+bbb <- p7 + geom_boxplot() +
   ylab("Copulation Latency (sec)")
-ccc <- p8+geom_boxplot() +
+ccc <- p8 + geom_boxplot() +
   ylab("Copulation Duration (sec)")
-ddd <- p1+geom_boxplot() +
+ddd <- p1 + geom_boxplot() +
   ylab("Copulation Proportion")
 
 multiplot(aaa,ccc,bbb, ddd, cols=2)
@@ -178,9 +178,9 @@ head(AP_Data)
 
 #Models
 AP_Data$Rep <- as.numeric(AP_Data$Rep)
-mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Rep + Temperature + Humidity + (1|Date), data = AP_Data)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment + Rep + Temperature + Humidity + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 summary(mod_court)
-car::Anova(mod_court)
+Anova(mod_court)
 plot(allEffects(mod_court))
 
 mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
@@ -261,9 +261,9 @@ AP_age <-AP_Data %>%
 
 AP_Data$Treatment.Rep <- as.factor(AP_Data$Treatment.Rep)
 AP_Data$AgeBin <- as.factor(AP_Data$AgeBin)
-mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin + Temperature + Humidity + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 summary(mod_court)
-car::Anova(mod_court)
+Anova(mod_court)
 plot(allEffects(mod_court))
 
 courtLat <- effect("Treatment*AgeBin", mod_court)
@@ -280,9 +280,10 @@ latenCourt2
 #plot(allEffects(mod_court_plot))
 #summary(mod_court_plot)
 
-mod_copl_plot <- lmer(Rel_Cop_lat ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+mod_copl_plot <- lmer(Rel_Cop_lat ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 plot(allEffects(mod_copl_plot))
 summary(mod_copl_plot)
+Anova(mod_copl_plot)
 
 copLate <- effect("Treatment*AgeBin", mod_copl_plot)
 copLate <- as.data.frame(copLate)
@@ -295,9 +296,15 @@ LatenCop2 <-  LatenCop + geom_point(stat="identity", position=position_dodge(0.5
 LatenCop2
 
 AP_Data$Rel_Cop_dur <- as.numeric(AP_Data$Rel_Cop_dur)
-mod_copd_plot <- lmer(Rel_Cop_dur ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date), data = AP_Data)
+
+
+mod_copd_plot <- lmer(Rel_Cop_dur ~ 1+ Treatment*AgeBin + Temperature + Humidity + (1|Date) + (1|Treatment:Rep), data = AP_Data)
+
+
 plot(allEffects(mod_copd_plot))
 summary(mod_copd_plot)
+Anova(mod_copd_plot)
+
 
 copdur_plot <- effect("Treatment*AgeBin", mod_copd_plot)
 copdur_plot <- as.data.frame(copdur_plot)
@@ -310,9 +317,18 @@ DuratCop2 <- DuratCop + geom_point(stat="identity", position=position_dodge(0.5)
 DuratCop2
 
 head(AP_Data)
-mod_cop_count <- lmer(Copulation ~ 0 + Temperature + Humidity + Treatment*AgeBin + (1|Date), data = AP_Data)
+
+# Paul and Ian need to finish figuring out convergence issues for mixed glm. 
+mod_cop_count <- glmer(Copulation ~ 1 + Temperature + Humidity + Treatment*AgeBin + (1|Date) + (1|Treatment:Rep), family = "binomial", data = AP_Data)
+
 plot(allEffects(mod_cop_count))
 summary(mod_cop_count)
+Anova(mod_cop_count)
+
+# Use regular glm for moment.
+mod_cop_count_glm <- glm(Copulation ~ 1 + Temperature + Humidity + Treatment*AgeBin, family = "binomial", data = AP_Data)
+summary(mod_cop_count_glm)
+Anova(mod_cop_count_glm)
 
 cop_prop_plot <- effect("Treatment*AgeBin", mod_cop_count)
 cop_prop_plot <- as.data.frame(cop_prop_plot)

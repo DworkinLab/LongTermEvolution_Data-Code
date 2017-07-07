@@ -238,3 +238,4 @@ line_LTS4 <- lm(pred_cor3$activity_counts[pred_cor3$Predator == "Spider"] ~ pred
 with(pred_cor3, plot(x = activity_counts[Predator == "Spider"],y = activity_counts[Predator == "LTS" & Population == 4],  abline(line_LTS4), main = "Spider:LTS Rep4", xlab= "Spider Activity", ylab="Fly Activity" ) )
 
 par(mfrow=c(1,1))
+
