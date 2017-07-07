@@ -308,6 +308,7 @@ Anova(mod_copd_plot)
 
 copdur_plot <- effect("Treatment*AgeBin", mod_copd_plot)
 copdur_plot <- as.data.frame(copdur_plot)
+
 DuratCop <- ggplot(copdur_plot, aes(y=fit, x=AgeBin, colour=Treatment))
 DuratCop2 <- DuratCop + geom_point(stat="identity", position=position_dodge(0.5)) + 
   geom_linerange(aes(ymin=lower, ymax=upper), position = position_dodge(0.5)) + 
