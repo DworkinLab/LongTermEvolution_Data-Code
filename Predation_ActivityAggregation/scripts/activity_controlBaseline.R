@@ -27,18 +27,28 @@ Base_plots2 <- Base_plots + geom_jitter(size=0.5) + geom_smooth(method = "loess"
   #ggtitle("Long Term Evolved Populations: hourly activity counts") + 
   ylab("Hourly Activity") +
   xlab("Hour")
+
 print(Base_plots2)
 
-head(BaseActivity)
 #Evolved Populations (cleaned in ActivityPredators.R script)
-head(dat_play)
+dat_playing <- dat.hourly
+dat_playing <- within(dat_playing, { 
+  Predation = ifelse (Trt == "C", "LTC", ifelse(Trt == "S", "LTS", "LTP"))})
+dat_playing <- within(dat_playing, Predator <- paste(Predation, Population, sep=""))
+
+
+colnames(dat_playing) <- c("vial", "monitor", "start_day", "hour", "Trt", "Population", "activity_counts", "individual", "light", "Predation", "Predator")
+
+dat_play <- subset(dat_playing, select=c("vial", "hour", "Predator", "activity_counts", "light"))
+
+
+
+
 BaseActivity2 <- subset(BaseActivity, select=c("Treatment", "Vial", "hour", "activity_counts", "light"))
-head(BaseActivity2)
+
 colnames(dat_play) <- c("Vial", "hour", "Treatment", "activity_counts", "light")
 
 DATA_baseEvolved <- rbind(dat_play, BaseActivity2)
-head(DATA_baseEvolved)
-
 
 BaseEvolvedPlot <- ggplot(DATA_baseEvolved, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,24) + ylim(0,600)
 BaseEvolvedPlot2 <- BaseEvolvedPlot + geom_jitter(size=0.5) + geom_smooth(method = "loess") + 

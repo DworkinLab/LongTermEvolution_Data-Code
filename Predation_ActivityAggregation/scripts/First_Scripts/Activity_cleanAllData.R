@@ -13,9 +13,9 @@ source("Packages_source_file.R")
 
 ########## Long Term Evolved Populations:
 
-
 DAM1 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM1_May2015_RD.txt")
 DAM2 <- read.table("../data/Activity_Drosophila_EvolvedPops_May2015/PredationActivityDAM2_May2015_RD.txt")
+
 #monitor
 DAM2$v45 <- 2
 DAM1$v45 <- 1
@@ -37,7 +37,8 @@ DAM_data2$datetime <- as.POSIXct( strptime( paste( DAM_data2$day,DAM_data2$month
                                             "%d %B %y %H:%M:%S") )
 DAM_data2$monitor <- as.factor(DAM_data2$monitor)
 
-head(DAM_data2)
+DAM_long <- gather(DAM_data2, Vial, activity_counts, vial1:vial24, factor_key = FALSE)
+
 
 # munge the sample_info to have consistent naming conventions with DAM.
 
@@ -45,46 +46,39 @@ sample_info$vial <- paste("vial", sample_info$Location, sep="")
 colnames(sample_info)[3] <- "day"
 sample_info$day.vial <- interaction(sample_info$day, sample_info$vial) # day is the start day.
 
-# reshape
-
-head(DAM_data2)
-DAM_long <- reshape(DAM_data2, varying=list(8:31), v.names="activity_counts", direction="long")
-head(DAM_long)
-
-# Add the identifier (14400 is the number of time points per day times the number of days)
-DAM_long$vial <- rep(colnames(DAM_data2)[8:31], each=14400)
 
 start_day <- c(19,21,23,26,28) # The starting days of the experiment
 
 # Make the start days match up for the experiments
-DAM_long$start_day <- ifelse( (DAM_long$day %in% start_day), DAM_long$day, (DAM_long$day -1 ))
+DAM_long$start_day <- ifelse((DAM_long$day %in% start_day), 
+                             DAM_long$day, 
+                             (DAM_long$day-1))
 
-DAM_long$day.vial <- interaction(DAM_long$start_day, DAM_long$vial)
+DAM_long$day.vial <- interaction(DAM_long$start_day, DAM_long$Vial)
 
 DAM_long2 <- merge(DAM_long, sample_info, by="day.vial")
 
-head(DAM_long2)
+DAM_long2 <- subset(DAM_long2, select = 
+                      -c(day.x, month, year, time, 
+                         signal, Vial, Location, day.y) )
+
 
 # To get minute
 DAM_long2$minute <- as.numeric(strftime(DAM_long2$datetime, format ="%M"))
 # to get hour
 DAM_long2$hour <- as.numeric(strftime(DAM_long2$datetime, format ="%H"))
 
-
 # To create a variable for each individual
 DAM_long2$individual <- with(DAM_long2, interaction(day.vial, monitor, drop=FALSE))
 nlevels(DAM_long2$individual)
 
+dat.hourly <- DAM_long2 %>%
+  group_by(vial, monitor, start_day, hour, Trt, Population) %>%
+  summarise(Hourly_activity=sum(activity_counts))
 
-dat.hourly <- with(DAM_long2, 
-                   aggregate(activity_counts, FUN=sum, by=list(vial.x, monitor, start_day, hour, Trt, Population)))
-colnames(dat.hourly) <- c("vial.x", "monitor", "start_day", "hour", "Trt", "Population", "Hourly_activity")     
-dat.hourly$individual <- with(dat.hourly, interaction(start_day, vial.x, monitor, drop=FALSE))
+dat.hourly$individual <- with(dat.hourly, interaction(start_day, vial, monitor, drop=FALSE))
 
 dat.hourly$light <- with(dat.hourly, ifelse(hour >= 10 & hour < 22, "light", "dark"))
-
-
-
 
 ########## Complex Cues Exp_2:
 
@@ -396,3 +390,5 @@ act_hour$individual <- with(act_hour, interaction(Vial, monitor, drop=FALSE))
 act_hour$light <- with(act_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
 
 #### For all: have Activity in long format and activity by hour
+
+

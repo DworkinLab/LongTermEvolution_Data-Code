@@ -99,7 +99,7 @@ mod_cop_count <- glmer(Copulation ~ 1 + Treatment*AgeBin +
                        family = "binomial", 
                        data = AP_Data)
 
-#This is the issue; some age bin/treatments have 0
+#This is the issue; some age bin/treatments have 0 (Namely LTSR4)
 X <- AP_Data
 X$Treatment.Rep.Age <- with(X, paste0(Treatment, Rep, AgeBin))
 X$Treatment.Rep.Age <- as.factor(X$Treatment.Rep.Age)
