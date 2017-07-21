@@ -18,5 +18,12 @@ SpiCon$Exp <- "Spiders"
 BaseActivity <- rbind(ManCon, SpiCon)
 BaseActivity <- BaseActivity[which(BaseActivity$Treatment=='Control'), ]
 
-# Summary plots:
+# Models:
+
+mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  bs(hour, 4) + monitor + start_day + (1 + bs(hour, 4) + light | individual), data=dat.hourly)
+
+summary(mod_trial_1)
+pacf(resid(mod_trial_1))
+car::Anova(mod_trial_1)
+
 

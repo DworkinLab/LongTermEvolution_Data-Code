@@ -68,3 +68,6 @@ dat.hourly <- DAM_long2 %>%
 dat.hourly$individual <- with(dat.hourly, interaction(start_day, vial, monitor, drop=FALSE))
 
 dat.hourly$light <- with(dat.hourly, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+
+dat.hourly <- within(dat.hourly, { 
+  Predation = ifelse (Trt == "C", "Control", ifelse(Trt == "S", "Spider", "Mantids"))})
