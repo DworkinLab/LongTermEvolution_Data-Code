@@ -2,7 +2,7 @@
 
 #https://stats.idre.ucla.edu/r/faq/how-can-i-explore-different-smooths-in-ggplot2/
 
-source("Activity_cleanAllData.R")
+#source("Activity_cleanAllData.R")
 
 ### Data Available:
 head(dat.hourly) ## LongTermEvolvedFlies

@@ -140,6 +140,8 @@ car::Anova(mod_trial_1)
 
 
 
+
+
 ### Mantid Cues
 
 print(Man_plot2)
