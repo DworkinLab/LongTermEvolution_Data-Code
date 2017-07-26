@@ -38,6 +38,64 @@ pacf(resid(mod_trial_1))
 car::Anova(mod_trial_1)
 
 
+
+################
+#Model made for a test:
+# Models:
+
+head(dat.hourly)
+dat.hourly$Predation <- as.factor(dat.hourly$Predation)
+dat.hourly$light <- as.factor(dat.hourly$light)
+
+
+mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation +  Predation:ns(hour, 5) + monitor + start_day + (1 + ns(hour, 5) + light | individual), data=dat.hourly)
+
+summary(mod_trial_1)
+pacf(resid(mod_trial_1))
+car::Anova(mod_trial_1)
+plot(allEffects(mod_trial_1))
+
+Evolve_plot <- effect("Predation*light", mod_trial_1)
+Evolve_plot <- as.data.frame(Evolve_plot)
+head(Evolve_plot)
+Evolve_plot2 <- ggplot(Evolve_plot, 
+                       aes(y=fit, x=light, colour=Predation))
+
+Evolve_plot3 <- Evolve_plot2 + 
+  geom_point(stat="identity", 
+             position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), 
+                 position = position_dodge(0.5)) + 
+  labs(y="Intercept", 
+       x="Light") +
+  ggtitle("Evolved Population") + 
+  scale_colour_manual(values=
+                        c("#999999", "#56B4E9", "#E69F00"))
+print(Evolve_plot3)
+
+
+hour_plot <- effect("Predation:ns(hour,5)", mod_trial_1)
+hour_plot <- as.data.frame(hour_plot)
+head(hour_plot)
+hour_plot2 <- ggplot(hour_plot, 
+                     aes(y=fit, x=hour, colour=Predation))
+
+hour_plot3 <- hour_plot2 + 
+  geom_smooth(stat="identity", 
+              position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), 
+                 position = position_dodge(0.5)) + 
+  ggtitle("Evolved Population") + 
+  scale_colour_manual(values=
+                        c("#999999", "#56B4E9", "#E69F00"))
+print(hour_plot3)
+
+
+################
+
+
+
+
 #### Mantid Cues
 
 man.mod <- lm(activity_counts ~ Treatment + hour + monitor,data=Mantid_hour)
