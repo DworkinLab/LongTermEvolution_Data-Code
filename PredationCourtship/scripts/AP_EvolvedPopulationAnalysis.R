@@ -12,7 +12,7 @@ mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin +
                   data = AP_Data)
 
 summary(mod_court)
-Anova(mod_court)
+car::Anova(mod_court)
 
 
 courtLat <- effect("Treatment*AgeBin", mod_court)
@@ -99,7 +99,7 @@ mod_cop_count <- glmer(Copulation ~ 1 + Treatment*AgeBin +
                        family = "binomial", 
                        data = AP_Data)
 
-#This is the issue; some age bin/treatments have 0 (Namely LTSR4)
+#This is the issue; some age bin/treatments have 0 (Namely LTSR4 = 100% copulation)
 X <- AP_Data
 X$Treatment.Rep.Age <- with(X, paste0(Treatment, Rep, AgeBin))
 X$Treatment.Rep.Age <- as.factor(X$Treatment.Rep.Age)
