@@ -106,6 +106,20 @@ Exp3_mod_spli_2 <- lmer(activity_counts ~ sin(hour2) + cos(hour2) + Treatment*li
 summary(Exp3_mod_spli_2)
 pacf(resid(Exp3_mod_spli_2))
 car::Anova(Exp3_mod_spli_2)
+anova(Exp3_mod_spli_2)
+
+Exp3_hour$hour3 <- (pi*Exp3_hour$hour/6)
+Exp3_hourl <- subset(Exp3_hour, light=="light")
+Exp3_hourlmod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3) +monitor +(1|individual), data=Exp3_hourl)
+summary(Exp3_hourlmod)
+Anova(Exp3_hourlmod)
+
+
+Exp3_hourd <- subset(Exp3_hour, light=="dark")
+Exp3_hourdmod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3)  +(1|individual), data=Exp3_hourd)
+summary(Exp3_hourdmod)
+Anova(Exp3_hourdmod)
+
 
 Exp3_plot <- effect("Treatment*light", Exp3_mod_spli_2)
 Exp3_plot <- as.data.frame(Exp3_plot)
@@ -146,6 +160,16 @@ summary(Exp2_mod_spli_2)
 pacf(resid(Exp2_mod_spli_2))
 car::Anova(Exp2_mod_spli_2)
 
+Exp2_hour$hour3 <- (pi*Exp2_hour$hour/6)
+Exp2_hourl <- subset(Exp2_hour, light=="light")
+Exp2_hourlmod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3)  +(1|individual), data=Exp2_hourl)
+summary(Exp2_hourlmod)
+Anova(Exp2_hourlmod)
+
+Exp2_hourd <- subset(Exp2_hour, light=="dark")
+Exp2_hourdmod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3)  +(1|individual), data=Exp2_hourd)
+summary(Exp2_hourdmod)
+Anova(Exp2_hourdmod)
 
 Exp2_plot <- effect("Treatment*light", Exp2_mod_spli_2)
 Exp2_plot <- as.data.frame(Exp2_plot)
@@ -176,6 +200,19 @@ summary(spider_mod_spli)
 llikAIC(spider_mod_spli)
 pacf(resid(spider_mod_spli))
 car::Anova(spider_mod_spli)
+
+#Significant:
+act_hour$hour3 <- (pi*act_hour$hour/6)
+act_hourlight <- subset(act_hour, light=="light")
+spider_lightMod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3)  +(1|individual), data=act_hourlight)
+summary(spider_lightMod)
+Anova(spider_lightMod)
+
+act_hourdark <- subset(act_hour, light=="dark")
+spider_darkMod <- lmer(activity_counts ~ Treatment + sin(hour3) + cos(hour3)  +(1|individual), data=act_hourdark)
+summary(spider_darkMod)
+Anova(spider_darkMod)
+
 
 
 spider_mod_spli_2 <- lmer(activity_counts ~ Treatment*light + sin(hour2) + cos(hour2)  + monitor
@@ -213,6 +250,15 @@ summary(mantid_mod_spli)
 pacf(resid(mantid_mod_spli))
 car::Anova(mantid_mod_spli)
 
+#Mantid_hour_Light <- subset(Mantid_hour, light=="light")
+#mantid_modLight <- lmer(activity_counts ~ Treatment + sin(hour2) + cos(hour2)  +(1|individual), data=Mantid_hour_Light)
+#summary(mantid_modLight)
+#Anova(mantid_modLight)
+
+#Mantid_hour_dark <- subset(Mantid_hour, light=="dark")
+#mantid_moddark <- lmer(activity_counts ~ Treatment + sin(hour2) + cos(hour2)  +(1|individual), data=Mantid_hour_dark)
+#summary(mantid_moddark)
+#Anova(mantid_moddark)
 
 mantid_mod_spli_2 <- lmer(activity_counts ~ Treatment*light + sin(hour2) + cos(hour2)  + monitor
                           + (1 + light | individual), data=Mantid_hour)
