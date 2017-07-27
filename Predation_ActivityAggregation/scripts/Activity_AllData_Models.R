@@ -292,3 +292,36 @@ lsmeans(Exp3_mod_spli, specs = c("Treatment", "light"))
 lsmeansLT(Exp3_mod_spli, specs = c("Treatment", "light"))
 lsmeansLT(Exp3_mod_spli, specs = c("Treatment", "light"))
 
+
+
+
+
+
+Exp3_hour$hour2 <- (pi*Exp3_hour$hour/12)
+
+Exp3_mod_spli_2 <- lmer(activity_counts ~ Treatment*light  + sin(hour2) + cos(hour2) + monitor 
+                        + (1 + light | individual), data=Exp3_hour)
+
+summary(Exp3_mod_spli_2)
+pacf(resid(Exp3_mod_spli_2))
+car::Anova(Exp3_mod_spli_2)
+
+plot(allEffects(Exp3_mod_spli_2))
+
+Exp3_plot <- effect("Treatment*light", Exp3_mod_spli_2)
+Exp3_plot <- as.data.frame(Exp3_plot)
+head(Exp3_plot)
+Exp3_plot2 <- ggplot(Exp3_plot, 
+                     aes(y=fit, x=light, colour=Treatment))
+
+Exp3_plot3 <- Exp3_plot2 + 
+  geom_point(stat="identity", 
+             position=position_dodge(0.5)) + 
+  geom_linerange(aes(ymin=lower, ymax=upper), 
+                 position = position_dodge(0.5)) + 
+  labs(y="Intercept", 
+       x="Light") +
+  ggtitle("Exp3") + 
+  scale_colour_manual(values=
+                        c("#999999", "#56B4E9", "#E69F00", "grey"))
+print(Exp3_plot3)
