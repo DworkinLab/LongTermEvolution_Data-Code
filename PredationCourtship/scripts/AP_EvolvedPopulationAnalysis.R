@@ -1,4 +1,4 @@
-#Official Script
+ #Official Script
 
 source("AP_Packages.R")
 source("AP_Clean_Data.R")
@@ -18,6 +18,7 @@ car::Anova(mod_court)
 courtLat <- effect("Treatment*AgeBin", mod_court)
 courtLat <- as.data.frame(courtLat)
 
+head(courtLat)
 latenCourt <- ggplot(courtLat, 
                      aes(y=fit, x=AgeBin, colour=Treatment))
 
@@ -98,6 +99,14 @@ mod_cop_count <- glmer(Copulation ~ 1 + Treatment*AgeBin +
                          (1|Date) + (1|Treatment:Rep), 
                        family = "binomial", 
                        data = AP_Data)
+
+TMB_mod_cop_count <- glmmTMB(Copulation ~ 1 + Treatment*AgeBin + 
+                         (1|Date) + (1|Treatment:Rep), 
+                       family = "binomial", 
+                       data = AP_Data)
+
+summary(TMB_mod_cop_count)
+summary(mod_cop_count)
 
 #This is the issue; some age bin/treatments have 0 (Namely LTSR4 = 100% copulation)
 X <- AP_Data
