@@ -28,10 +28,11 @@ LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 600) +
-  geom_vline(xintercept = 8) +
+  #geom_vline(xintercept = 8) +
   #ggtitle("Long Term Evolved Populations: hourly activity counts") + 
-  ylab("Hourly Activity") +
-  xlab("Hour")
+  labs(y="Hourly Counts", 
+       x="Hour") +
+  scale_colour_manual(values=c("#999999",  "#56B4E9", "#E69F00"))
 print(LT_plot2)
 
 ## Mantid Cues
@@ -42,8 +43,11 @@ Man_plot2 <- Man_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   annotate("rect", fill = "yellow", alpha = 0.2, 
            xmin = 10, xmax = 22,
            ymin = 0, ymax = 100) +
-  geom_vline(xintercept = 14) + geom_vline(xintercept = 11.5) +
-  ggtitle("Mantid Cues vs Control: hourly activity counts")
+  labs(y="Hourly Counts", 
+       x="Hour") +
+  #geom_vline(xintercept = 14) + geom_vline(xintercept = 11.5) +
+  #ggtitle("Mantid Cues vs Control: hourly activity counts") + 
+  scale_colour_manual(values=c("#999999",  "#56B4E9"))
 print(Man_plot2)
 
 
@@ -54,10 +58,12 @@ spi_plot <- ggplot(act_hour, aes(x=hour, y= activity_counts, colour=Treatment)) 
 spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
-               ymin = 0, ymax = 400) + geom_vline(xintercept = 12) +
+               ymin = 0, ymax = 400) +
+  #geom_vline(xintercept = 12) +
   #ggtitle("Spider Cues vs. Control: hourly activity counts") + 
-  ylab("Hourly Activity") +
-  xlab("Hour")
+  labs(y="Hourly Counts", 
+       x="Hour") +
+  scale_colour_manual(values=c("#999999", "#E69F00"))
 print(spi_plot2)
 
 
@@ -65,26 +71,32 @@ print(spi_plot2)
 
 ## Complex Cues 2:
 
-Exp2_plot <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,25) + ylim(0,400)
-Exp2_plot2 <- Exp2_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
+plot_Exp2 <- ggplot(Exp2_hour, aes(x=hour, y= activity_counts, colour=Treatment)) + xlim(0,25) + ylim(0,400)
+plot_Exp2_2 <- plot_Exp2 + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 400) +
-  geom_vline(xintercept = 12) +
-  ggtitle("Complex Cues Experiment 2: hourly activity counts")
-print(Exp2_plot2)
+  labs(y="Hourly Counts", 
+       x="Hour") +
+  #geom_vline(xintercept = 12) +
+  #ggtitle("Complex Cues Experiment 2: hourly activity counts") + 
+  scale_colour_manual(values=c("grey20", "#E69F00"))
+print(plot_Exp2_2)
 
 
 ## Complex Cues 3:
 
-Exp3_plot <- ggplot(Exp3_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,500)
-Exp3_plot2 <- Exp3_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
+plot_Exp3 <- ggplot(Exp3_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,500)
+plot_Exp3_2 <- plot_Exp3 + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
                ymin = 0, ymax = 500) +
-  geom_vline(xintercept = 12) +
-  ggtitle("Complex Cues Experiment 3: hourly activity counts")
-print(Exp3_plot2)
+  labs(y="Hourly Counts", 
+       x="Hour") +
+  #geom_vline(xintercept = 12) +
+  #ggtitle("Complex Cues Experiment 3: hourly activity counts") + 
+  scale_colour_manual(values=c("grey20",  "thistle4", "darkorange3", "#E69F00"))
+print(plot_Exp3_2)
 
 
 
@@ -93,3 +105,4 @@ print(Exp3_plot2)
 LT_plot2 + scale_colour_manual(values=c("#999999",  "#56B4E9", "#E69F00"))
 
 spi_plot2 + scale_color_manual(values=c("#999999",  "#E69F00"))
+

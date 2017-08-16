@@ -56,40 +56,43 @@ Mantid_hour$hour2 <- (pi*Mantid_hour$hour/12)
 
 
 ##################
-
-mod_trial_1 <- lmer(Hourly_activity ~ Predation + Predation:Population + light + light:Predation + ns(hour, 5) + monitor + start_day + (1 + ns(hour, 5) + light | individual), data=dat.hourly)
+head(dat.hourly)
+dat.hourly$Treatment <- dat.hourly$Predation
+mod_trial_1 <- lmer(Hourly_activity ~ Treatment + Treatment:Population + light + light:Treatment + ns(hour, 5) + monitor + start_day + (1 + ns(hour, 5) + light | individual), data=dat.hourly)
 
 summary(mod_trial_1)
 pacf(resid(mod_trial_1))
 car::Anova(mod_trial_1)
+fixef(mod_trial_1)
 plot(allEffects(mod_trial_1))
 
 
-mod_trial_2 <- lmer(Hourly_activity ~ sin(hour2) + cos(hour2) + Predation + Predation:Population + light + light:Predation + start_day + monitor
+mod_trial_2 <- lmer(Hourly_activity ~ sin(hour2) + cos(hour2) + Treatment + Treatment:Population + light + light:Treatment + start_day + monitor
                         + (1 + light | individual), data=dat.hourly)
 
 summary(mod_trial_2)
 pacf(resid(mod_trial_2))
 car::Anova(mod_trial_2)
 
-Evolve_plot <- effect("Predation*light", mod_trial_2)
+Evolve_plot <- effect("Treatment*light", mod_trial_2)
 Evolve_plot <- as.data.frame(Evolve_plot)
 head(Evolve_plot)
 Evolve_plot2 <- ggplot(Evolve_plot, 
-                  aes(y=fit, x=light, colour=Predation))
+                  aes(y=fit, x=light, colour=Treatment))
 
-Evolve_plot3 <- Evolve_plot2 + 
+Evolve_plot3 <- Evolve_plot2 +
   geom_point(stat="identity", 
-             position=position_dodge(0.5)) + 
+             position=position_dodge(0.5), size=3) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
-                 position = position_dodge(0.5)) + 
-  labs(y="Intercept", 
-       x="Light") +
-  ggtitle("Evolved Population") + 
+                 position = position_dodge(0.5), size=1.5) + 
+  labs(y="Hourly Count", 
+       x="Phase") +
+  theme(text = element_text(size=15), 
+        axis.text.x= element_text(size=15)) +
   scale_colour_manual(values=
                         c("#999999", "#56B4E9", "#E69F00"))
 print(Evolve_plot3)
- 
+
 #############
 
 Exp3_mod_spli <- lmer(activity_counts ~ ns(hour, 5) + monitor + Treatment*light +  (1 + ns(hour, 5)) + (1 + light | individual), 
@@ -129,14 +132,15 @@ Exp3_plot2 <- ggplot(Exp3_plot,
 
 Exp3_plot3 <- Exp3_plot2 + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5)) + 
+             position=position_dodge(0.5), size=3) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
-                 position = position_dodge(0.5)) + 
-  labs(y="Intercept", 
-       x="Light") +
-  ggtitle("Exp3") + 
+                 position = position_dodge(0.5), size=1.5) + 
+  labs(y="Hourly Count", 
+       x="Phase") +
+  theme(text = element_text(size=15), 
+        axis.text.x= element_text(size=15)) +
   scale_colour_manual(values=
-                        c("#999999", "#56B4E9", "#E69F00", "grey"))
+                        c("grey20",  "thistle4", "darkorange3", "#E69F00"))
 print(Exp3_plot3)
 
 
@@ -179,14 +183,15 @@ Exp2_plot2 <- ggplot(Exp2_plot,
 
 Exp2_plot3 <- Exp2_plot2 + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5)) + 
+             position=position_dodge(0.5), size=3) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
-                 position = position_dodge(0.5)) + 
-  labs(y="Intercept", 
-       x="Light") +
-  ggtitle("Exp2") + 
+                 position = position_dodge(0.5), size=1.5) + 
+  labs(y="Hourly Count", 
+       x="Phase") +
+  theme(text = element_text(size=15), 
+        axis.text.x= element_text(size=15)) +
   scale_colour_manual(values=
-                        c("#999999", "#56B4E9", "#E69F00", "grey"))
+                        c("grey20", "#E69F00"))
 print(Exp2_plot3)
 
 
@@ -231,14 +236,15 @@ spider_plot2 <- ggplot(spider_plot,
 
 spider_plot3 <- spider_plot2 + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5)) + 
+             position=position_dodge(0.5), size=3) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
-                 position = position_dodge(0.5)) + 
-  labs(y="Intercept", 
-       x="Light") +
-  ggtitle("spider") + 
+                 position = position_dodge(0.5), size=1.5) + 
+  labs(y="Hourly Count", 
+       x="Phase") +
+  theme(text = element_text(size=15), 
+        axis.text.x= element_text(size=15)) +
   scale_colour_manual(values=
-                        c("#999999", "#E69F00", "grey"))
+                        c("#999999", "#E69F00"))
 print(spider_plot3)
 
 
@@ -282,5 +288,5 @@ mantid_plot3 <- mantid_plot2 +
        x="Light") +
   ggtitle("mantid") + 
   scale_colour_manual(values=
-                        c("#999999", "#E69F00", "grey"))
+                        c("#999999",  "#56B4E9"))
 print(mantid_plot3)
