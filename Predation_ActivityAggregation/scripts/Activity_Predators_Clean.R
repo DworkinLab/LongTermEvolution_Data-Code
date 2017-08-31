@@ -56,12 +56,15 @@ mantid_hour$Predator <- "Mantid"
 spider_hour$Predator <- "Spider"
 head(mantid_hour)
 head(spider_hour)
-#with(mantid_hour, boxplot(activity_counts ~ hour))
-#with(spider_hour, boxplot(activity_counts ~ hour))
+with(mantid_hour, boxplot(activity_counts ~ hour))
+with(spider_hour, boxplot(activity_counts ~ hour))
+
+ggplot(spider_hour, aes(x=hour, y= activity_counts)) + 
+  geom_jitter()
 
 Pred_act <- rbind(spider_hour, mantid_hour)
 head(Pred_act)
-Pred_Activity <- ggplot(Pred_act, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,1500)
+Pred_Activity <- ggplot(Pred_act, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,1000)
  
 Pred_Activity_2 <- Pred_Activity + geom_jitter(size=0.5) + 
   geom_smooth(method = "loess") + 
@@ -70,15 +73,17 @@ Pred_Activity_2 <- Pred_Activity + geom_jitter(size=0.5) +
            xmin = 10, 
            xmax = 22, 
            ymin = 0, 
-           ymax = 1500) +
+           ymax = 1000) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15), legend.position='none') +
   labs(y="Hourly Counts", 
      x="Hour") +
   scale_colour_manual(values=c("#56B4E9", "#E69F00"))
-
+print(Pred_Activity_2)
 
 #spider_hour, mantid_hour
 
-SpiderPred_act <- ggplot(spider_hour, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,500) 
+SpiderPred_act <- ggplot(spider_hour, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,400) 
 SpiderPred_act_2 <- SpiderPred_act + geom_jitter(size=0.5) + 
   geom_smooth(method = "loess") + 
   annotate("rect", fill = "yellow", 
@@ -86,10 +91,15 @@ SpiderPred_act_2 <- SpiderPred_act + geom_jitter(size=0.5) +
            xmin = 10, 
            xmax = 22, 
            ymin = 0, 
-           ymax = 500) +
+           ymax = 400) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15), legend.position='none') +
   labs(y="Hourly Counts", 
        x="Hour") +
   scale_colour_manual(values=c("#E69F00"))
+
+
+print(SpiderPred_act_2)
 
 MantidPred_act <- ggplot(mantid_hour, aes(x=hour, y= activity_counts, colour=Predator)) + xlim(0,24) + ylim(0,1000) 
 MantidPred_act_2 <- MantidPred_act + geom_jitter(size=0.5) + 
@@ -100,6 +110,8 @@ MantidPred_act_2 <- MantidPred_act + geom_jitter(size=0.5) +
            xmax = 22, 
            ymin = 0, 
            ymax = 1000) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15), legend.position='none') +
   labs(y="Hourly Counts", 
        x="Hour") +
   scale_colour_manual(values=c("#56B4E9"))
@@ -107,5 +119,10 @@ MantidPred_act_2 <- MantidPred_act + geom_jitter(size=0.5) +
 
 
 print(MantidPred_act_2)
+
+
 print(SpiderPred_act_2)
+
+
+
 print(Pred_Activity_2)

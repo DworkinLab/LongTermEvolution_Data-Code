@@ -32,6 +32,8 @@ LT_plot2 <- LT_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
   #ggtitle("Long Term Evolved Populations: hourly activity counts") + 
   labs(y="Hourly Counts", 
        x="Hour") +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=c("#999999",  "#56B4E9", "#E69F00"))
 print(LT_plot2)
 
@@ -45,6 +47,8 @@ Man_plot2 <- Man_plot + geom_jitter(size=0.5) + geom_smooth(method = "loess") +
            ymin = 0, ymax = 100) +
   labs(y="Hourly Counts", 
        x="Hour") +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   #geom_vline(xintercept = 14) + geom_vline(xintercept = 11.5) +
   #ggtitle("Mantid Cues vs Control: hourly activity counts") + 
   scale_colour_manual(values=c("#999999",  "#56B4E9"))
@@ -63,6 +67,8 @@ spi_plot2 <- spi_plot + geom_jitter(size=0.5) + geom_smooth(size=1, method="loes
   #ggtitle("Spider Cues vs. Control: hourly activity counts") + 
   labs(y="Hourly Counts", 
        x="Hour") +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=c("#999999", "#E69F00"))
 print(spi_plot2)
 
@@ -78,6 +84,8 @@ plot_Exp2_2 <- plot_Exp2 + geom_jitter(size=0.5) + geom_smooth(size=1, method="l
                ymin = 0, ymax = 400) +
   labs(y="Hourly Counts", 
        x="Hour") +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   #geom_vline(xintercept = 12) +
   #ggtitle("Complex Cues Experiment 2: hourly activity counts") + 
   scale_colour_manual(values=c("grey20", "#E69F00"))
@@ -93,6 +101,8 @@ plot_Exp3_2 <- plot_Exp3 + geom_jitter(size=0.5) + geom_smooth(size=1, method="l
                ymin = 0, ymax = 500) +
   labs(y="Hourly Counts", 
        x="Hour") +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   #geom_vline(xintercept = 12) +
   #ggtitle("Complex Cues Experiment 3: hourly activity counts") + 
   scale_colour_manual(values=c("grey20",  "thistle4", "darkorange3", "#E69F00"))
