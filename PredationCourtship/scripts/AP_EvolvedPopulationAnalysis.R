@@ -31,14 +31,14 @@ latenCourt <- ggplot(courtLat,
 
 latenCourt2 <- latenCourt + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5), size=3) + 
+             position=position_dodge(0.5), size=5) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
                  position = position_dodge(0.5), size=1.5) + 
   labs(y="Time (sec)", 
        x="Age Bins") +
   #ggtitle("Courtship Latency") + 
-  theme(text = element_text(size=15), 
-        axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=
                         c("#999999", "#56B4E9", "#E69F00"))
 
@@ -62,14 +62,14 @@ LatenCop <- ggplot(copLate,
 
 LatenCop2 <-  LatenCop + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5), size=3) + 
+             position=position_dodge(0.5), size=5) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
                  position = position_dodge(0.5), size=1.5) + 
   labs(y="Time (sec)", 
        x="Age Bins") +
   #ggtitle("Copulation Latency") + 
-  theme(text = element_text(size=15), 
-        axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=
                         c("#999999", "#56B4E9", "#E69F00"))
 
@@ -94,14 +94,14 @@ DuratCop <- ggplot(copdur_plot,
 
 DuratCop2 <- DuratCop + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5), size=3) + 
+             position=position_dodge(0.5), size=5) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
                  position = position_dodge(0.5), size=1.5) + 
   labs(y="Time (sec)", 
        x="Age Bins") +
   #ggtitle("Copulation Duration") + 
-  theme(text = element_text(size=15), 
-        axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=
                         c("#999999", "#56B4E9", "#E69F00"))
 
@@ -192,14 +192,14 @@ propCop4 <- ggplot(cop_prop_plot2,
 
 propCop3 <- propCop4 + 
   geom_point(stat="identity", 
-             position=position_dodge(0.5), size=3) + 
+             position=position_dodge(0.5), size=5) + 
   geom_linerange(aes(ymin=lower, ymax=upper), 
                  position = position_dodge(0.5), size=1.5) + 
   labs(y="Proportion", 
        x="Age Bins") +
   #ggtitle("Copulation Proportion") + 
-  theme(text = element_text(size=15), 
-        axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   scale_colour_manual(values=
                         c("#999999", "#56B4E9", "#E69F00"))
 
