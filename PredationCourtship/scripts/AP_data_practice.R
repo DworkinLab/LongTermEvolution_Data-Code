@@ -183,14 +183,15 @@ summary(mod_court)
 Anova(mod_court)
 plot(allEffects(mod_court))
 
-mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
+mod_court_plot <- lmer(Rel_Court_lat ~ 1 + Treatment + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 plot(allEffects(mod_court_plot))
-mod_copl_plot <- lmer(Rel_Cop_lat ~ 1 + Treatment + (1|Date), data = AP_Data)
+mod_copl_plot <- lmer(Rel_Cop_lat ~ 1 + Treatment + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 plot(allEffects(mod_copl_plot))
 AP_Data$Rel_Cop_dur <- as.numeric(AP_Data$Rel_Cop_dur)
-mod_copd_plot <- lmer(Rel_Cop_dur ~ 1 + Treatment + (1|Date), data = AP_Data)
+mod_copd_plot <- lmer(Rel_Cop_dur ~ 1 + Treatment + (1|Date) + (1|Treatment:Rep), data = AP_Data)
 plot(allEffects(mod_copd_plot))
-mod_cop_count <- lmer(Copulation ~ 1+ Treatment + (1|Date), data=AP_Data)
+
+mod_cop_count <- lmer(Copulation ~ 1+ Treatment + (1|Date) + (1|Treatment:Rep), data=AP_Data)
 head(AP_Data)
 
 plot(effect("Treatment", mod_court_plot), main = "Relative Courtship Latency", ylab = "Courtship Latency (sec)", xlab = "Treatment",style="stacked",rug=F, key.args=list(space="right"), row = 1,col = 1,nrow = 2,ncol = 2, more=TRUE)
@@ -229,18 +230,18 @@ copLat$Behaviour <- "Copulation Latency"
 Times <- rbind(copDur, CourLat, copLat)
 head(Times)
 
-head(Times)
-Times <- within(Times, { 
-  Predation = ifelse (Treatment == "LTC", "Control", ifelse(Treatment == "LTS", "Spider", "Mantids"))})
-head(Times)
+#Times <- within(Times, { 
+#  Predation = ifelse (Treatment == "LTC", "Control", ifelse(Treatment == "LTS", "Spider", "Mantids"))})
 
-gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Predation))
+gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
 gg1 + geom_bar(stat="identity", position = position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + 
   ylab("Times (seconds)")  +
   xlab("") +
-  theme(text = element_text(size=15), axis.text.x=element_text(size=15)) #+ scale_fill_manual(values=c("#999999", "#56B4E9", "#E69F00"))
-
+  theme(text = element_text(size=15), axis.text.x=element_text(size=11)) + 
+  scale_fill_manual(values=c("#999999", "#56B4E9", "#E69F00")) #+
+  #scale_x_discrete(labels = abbreviate)
+  coord_flip()
 
 
 gg2 <- ggplot(copprop, aes(x=Treatment, y=fit))

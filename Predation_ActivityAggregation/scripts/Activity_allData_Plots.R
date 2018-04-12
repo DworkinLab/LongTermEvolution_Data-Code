@@ -93,8 +93,12 @@ print(plot_Exp2_2)
 
 
 ## Complex Cues 3:
+head(Exp3_hour)
+Exp3_hour2 <- within(Exp3_hour, { 
+  Cue = ifelse (Treatment == "C", "Cricket", ifelse (Treatment == "F", "Stimuli Fly", ifelse (Treatment == "SC", "Spider fed crickets", "Spider fed flies" )))})
 
-plot_Exp3 <- ggplot(Exp3_hour, aes(x=hour, y= activity_counts, colour=Treatment)) #+ xlim(0,24) + ylim(0,500)
+
+plot_Exp3 <- ggplot(Exp3_hour2, aes(x=hour, y= activity_counts, colour=Cue)) #+ xlim(0,24) + ylim(0,500)
 plot_Exp3_2 <- plot_Exp3 + geom_jitter(size=0.5) + geom_smooth(size=1, method="loess") + 
   annotate("rect", fill = "yellow", alpha = 0.2, 
                xmin = 10, xmax = 22,
@@ -105,7 +109,7 @@ plot_Exp3_2 <- plot_Exp3 + geom_jitter(size=0.5) + geom_smooth(size=1, method="l
         axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
   #geom_vline(xintercept = 12) +
   #ggtitle("Complex Cues Experiment 3: hourly activity counts") + 
-  scale_colour_manual(values=c("grey20",  "thistle4", "darkorange3", "#E69F00"))
+  scale_colour_manual(values=c("grey20", "darkorange3", "#E69F00","thistle4"))
 print(plot_Exp3_2)
 
 

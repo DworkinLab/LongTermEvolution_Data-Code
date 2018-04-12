@@ -8,6 +8,15 @@ source('Activity_Mantids_Clean.R')
 source('Activity_Spider_Clean.R')
 source('Activity_Predators_Clean.R')
 
+#ggplot(Exp2_hour, aes(hour, activity_counts, colour = Treatment)) + geom_smooth()
+#ggplot(Exp3_hour, aes(hour, activity_counts, colour = Treatment)) + geom_smooth()
+#ggplot(act_hour, aes(hour, activity_counts, colour = Treatment)) + geom_smooth()
+#ggplot(Mantid_hour, aes(hour, activity_counts, colour = Treatment)) + geom_smooth()
+
+dat.hourly$Treatment <- dat.hourly$Predation
+
+#ggplot(dat.hourly, aes(hour, Hourly_activity, colour = Treatment)) + geom_smooth(method = "loess")
+
 #Baseline activity may be required
 ManCon <- as.data.frame(Mantid_hour)
 SpiCon <- as.data.frame(act_hour)
@@ -125,6 +134,7 @@ Anova(Exp3_hourdmod)
 
 
 Exp3_plot <- effect("Treatment*light", Exp3_mod_spli_2)
+Exp3_plot
 Exp3_plot <- as.data.frame(Exp3_plot)
 head(Exp3_plot)
 head(Exp3_plot)

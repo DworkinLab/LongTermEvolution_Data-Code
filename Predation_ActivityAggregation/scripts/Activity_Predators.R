@@ -39,6 +39,8 @@ mantids$minute <- as.numeric(strftime(mantids$datetime, format ="%M"))
 mantids$hour <- as.numeric(strftime(mantids$datetime, format ="%H"))
 mantids$day <- as.numeric(strftime(mantids$datetime, format = "%d"))
 
+
+head(spiders)
 #Make Long
 mantids_long <- gather(mantids, vial, Activity_counts, vial1:vial32, factor_key = FALSE)
 spiders_long <- gather(spiders, vial, Activity_counts, vial1:vial32, factor_key = FALSE)
@@ -49,6 +51,10 @@ mantids_long$vial <- as.factor(mantids_long$vial)
 
 mantids_long$day <- as.factor(mantids_long$day)
 mantids_long$vial <- as.factor(mantids_long$vial)
+head(spiders_long)
+
+#with(spiders_long, boxplot(Activity_counts ~ datetime))
+ggplot(spiders_long, aes(time, Activity_counts)) + geom_smooth()
 
 
 mantid_hour <- mantids_long %>%
@@ -67,6 +73,8 @@ spider_hour$light <- with(spider_hour, ifelse(hour >= 10 & hour < 22, "light", "
 mantid_hour$Predator <- "Mantid"
 spider_hour$Predator <- "Spider"
 
+
+  
 
 head(spider_hour)
 head(mantid_hour)

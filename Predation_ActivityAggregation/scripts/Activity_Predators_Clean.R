@@ -35,6 +35,9 @@ mantids_long <- gather(mantids, vial, Activity_counts, vial1:vial32, factor_key 
 spiders_long <- gather(spiders, vial, Activity_counts, vial1:vial32, factor_key = FALSE)
 
 
+
+
+
 mantids_long$day <- as.factor(mantids_long$day)
 mantids_long$vial <- as.factor(mantids_long$vial)
 

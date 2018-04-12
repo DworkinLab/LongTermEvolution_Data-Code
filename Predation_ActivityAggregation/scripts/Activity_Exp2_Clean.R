@@ -1,5 +1,7 @@
 ## Complex cues 2 (spider vs. Cricket): Clean and Read 
 
+source('Packages_source_file.R')
+
 
 ComExp2_Mon1 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp2_spi_Vs_Cri_M1.txt")
 ComExp2_Mon2 <- read.table("../data/Activity_Drosophila_ComplexCues_June17_2016/Exp2_spi_Vs_Cri_M2.txt")
@@ -21,7 +23,7 @@ ComExp2_Mon2 <- ComExp2_Mon2[,-c(5:9)]
 
 ComExp2_Mon1 <- ComExp2_Mon1[,-c(2)]
 ComExp2_Mon2 <- ComExp2_Mon2[,-c(2)]
-
+head(ComExp2_Mon1)
 #Reform Date:
 ComExp2_Mon1$datetime <- as.POSIXct(paste(ComExp2_Mon1$date, ComExp2_Mon1$time), format="%Y-%m-%d %H:%M:%S")
 ComExp2_Mon2$datetime <- as.POSIXct(paste(ComExp2_Mon2$date, ComExp2_Mon2$time), format="%Y-%m-%d %H:%M:%S")
@@ -70,3 +72,5 @@ Exp2_hour <- Complex_2_long %>%
 Exp2_hour$individual <- with(Exp2_hour, interaction(Vial, monitor, drop=FALSE))
 
 Exp2_hour$light <- with(Exp2_hour, ifelse(hour >= 10 & hour < 22, "light", "dark"))
+
+

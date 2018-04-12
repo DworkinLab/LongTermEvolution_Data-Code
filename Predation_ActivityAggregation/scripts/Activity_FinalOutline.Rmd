@@ -1,0 +1,84 @@
+```{r, include=F, warning=F, echo=F}
+setwd('/Users/paulknoops/Bioinformatics/R-projects_git/LongTermEvolution_Data-Code/Predation_ActivityAggregation/scripts')
+source("Analysis_activityData.R")
+source("Activity_allData_Plots.R")
+```
+
+
+### Evolved Population Plots:
+Model:
+```
+mod_trial_2 <- lmer(Hourly_activity ~ sin(hour2) + cos(hour2) + Treatment + Treatment:Population + light + light:Treatment + start_day + monitor
+                        + (1 + light | individual), data=dat.hourly)
+```
+```{r, warning=F}
+summary(mod_trial_2)
+print(Evolve_plot3)
+print(LT_plot2)
+```
+
+### Exp3: Cricket vs. Spider fed Cricket vs. Fly vs. Spider fed flies
+Model:
+```
+Exp3_mod_spli_2 <- lmer(activity_counts ~ sin(hour2) + cos(hour2) + Treatment*light + monitor
+                        + (1 + light | individual), data=Exp3_hour)
+```
+
+```{r}
+summary(Exp3_mod_spli_2)
+print(Exp3_plot3)
+print(plot_Exp3_2)
+```
+
+
+### Exp 2: Spiders vs. Crickets
+
+Model:
+```
+Exp2_mod_spli_2 <- lmer(activity_counts ~ sin(hour2) + cos(hour2) + Treatment*light + monitor
+                        + (1 + light | individual), data=Exp2_hour)
+```
+```{r}
+summary(Exp2_mod_spli_2)
+
+print(Exp2_plot3)
+
+print(plot_Exp2_2)
+```
+
+
+### Spider vs. Control:
+
+Model:
+```
+spider_mod_spli_2 <- lmer(activity_counts ~ Treatment*light + sin(hour2) + cos(hour2)  + monitor
+                        + (1 + light | individual), data=act_hour)
+```
+
+```{r}
+summary(spider_mod_spli_2)
+print(spider_plot3)
+
+print(spi_plot2)
+
+```
+
+### Mantid vs. Control:
+```
+mantid_mod_spli_2 <- lmer(activity_counts ~ Treatment*light + sin(hour2) + cos(hour2)  + monitor
+                          + (1 + light | individual), data=Mantid_hour)
+```
+
+```{r}
+summary(mantid_mod_spli_2)
+
+print(mantid_plot3)
+print(Man_plot2)
+```
+
+
+
+
+
+
+

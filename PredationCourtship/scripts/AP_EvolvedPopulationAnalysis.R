@@ -1,5 +1,5 @@
  #Official Script
-
+setwd("~/Bioinformatics/R-projects_git/LongTermEvolution_Data-Code/PredationCourtship/scripts")
 source("AP_Packages.R")
 source("AP_Clean_Data.R")
 
@@ -13,7 +13,7 @@ AP_Data$Treatment <- as.factor(AP_Data$Treatment)
 #Models
 
 #Courtship Latency:
-
+head(AP_Data)
 mod_court <- lmer(Rel_Court_lat ~ 1 + Treatment*AgeBin + 
                     (1|Date) + (1|Treatment:Rep), 
                   data = AP_Data)
@@ -207,4 +207,19 @@ propCop3
 
 
 multiplot(latenCourt2, LatenCop2, DuratCop2, propCop_glmer_2, cols=2)
+
+courtLat$Behaviour <- "Courtship Latency"
+copLate$Behaviour <- "Copulation Latency"
+
+copdur_plot$Behaviour <- "Copulation Duration"
+
+Times <- rbind(courtLat, copLate, copdur_plot)
+head(Times)
+
+gg1 <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
+gg1 + geom_bar(stat="identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + 
+  ylab("Times (seconds)")  +
+  xlab("") +
+  theme(text = element_text(size=15), axis.text.x=element_text(size=15)) + scale_fill_manual(values=c("#999999", "#56B4E9", "#E69F00"))
 
